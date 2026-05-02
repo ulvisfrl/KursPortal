@@ -36,8 +36,28 @@ Sistem daxilində əməliyyatlar Web API üzərindən idarə olunur və istifad�
 - SQL Server  
 - Repository Pattern (N-Layer Architecture daxilində)  
 - HTML / CSS / JavaScript  
-
-
 🔹 Layihənin vəziyyəti
+
+Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə yaxındır. Bəzi əlavə funksiyalar və optimizasiya işləri üzərində inkişaf davam edir.
+
+## 📸 Screenshots
+
+### 🏠 Home Page
+![Home](home.jpg)
+
+### 📚 Courses Page
+![Courses](courses.jpg)
+
+### 📖 Course Details
+![Details](courses.jpg)
+
+### 🔐 Login Page
+![Login](login.jpg)
+
+### 📝 Register Page
+![Register](register.jpg)
+
+
+
 Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə yaxındır. Bəzi əlavə funksiyalar və optimizasiya işləri üzərində inkişaf davam edir.
 Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə yaxındır. Bəzi əlavə funksiyalar və optimizasiya işləri üzərində inkişaf davam edir.
