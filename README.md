@@ -43,19 +43,16 @@ Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə
 ## 📸 Screenshots
 
 ### 🏠 Home Page
-![Home](home.jpg)
+![Home](wwwroot/images/home.jpg)
 
 ### 📚 Courses Page
-![Courses](courses.jpg)
-
-### 📖 Course Details
-![Details](courses.jpg)
+![Courses](wwwroot/images/courses.jpg)
 
 ### 🔐 Login Page
-![Login](login.jpg)
+![Login](wwwroot/images/login.jpg)
 
 ### 📝 Register Page
-![Register](register.jpg)
+![Register](wwwroot/images/register.jpg)
 
 
 
