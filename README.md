@@ -28,14 +28,16 @@ Sistem daxilində əməliyyatlar Web API üzərindən idarə olunur və istifad�
 
   
 🔹 İstifadə olunan texnologiyalar
-ASP.NET Core MVC
-ASP.NET Core Web API
-ASP.NET Core Identity
-Entity Framework Core
-SQL Server
-Repository Pattern (N-Layer Architecture daxilində)
-HTML / CSS / JavaScript
+
+- ASP.NET Core MVC  
+- ASP.NET Core Web API  
+- ASP.NET Core Identity  
+- Entity Framework Core  
+- SQL Server  
+- Repository Pattern (N-Layer Architecture daxilində)  
+- HTML / CSS / JavaScript  
 
 
 🔹 Layihənin vəziyyəti
+Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə yaxındır. Bəzi əlavə funksiyalar və optimizasiya işləri üzərində inkişaf davam edir.
 Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə yaxındır. Bəzi əlavə funksiyalar və optimizasiya işləri üzərində inkişaf davam edir.
