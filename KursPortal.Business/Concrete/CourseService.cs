@@ -21,5 +21,11 @@ namespace KursPortal.Business.Concrete
         {
             return await _courseRepository.GetCoursesWithCategoriesAndTeachersAsync();
         }
+
+        public async Task<AppUser?> GetTeacherByCourseIdAsync(Guid courseId)
+        {
+            return await _courseRepository.GetTeacherByCourseIdAsync(courseId);
+        }
+
     }
 }

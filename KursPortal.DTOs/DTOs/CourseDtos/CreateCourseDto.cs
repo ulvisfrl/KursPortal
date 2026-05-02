@@ -15,6 +15,10 @@ namespace KursPortal.DTOs.DTOs.CourseDtos
         public decimal? DiscountPrice { get; set; }
         public string ImageUrl { get; set; }
         public string PreviewVideoUrl { get; set; }
+        public string Item1 { get; set; }
+        public string Item2 { get; set; }
+        public string Item3 { get; set; }
+        public string Item4 { get; set; }
         public int CourseHour { get; set; }
         public double Rating { get; set; } = 5.0;
         public bool IsPopular { get; set; }

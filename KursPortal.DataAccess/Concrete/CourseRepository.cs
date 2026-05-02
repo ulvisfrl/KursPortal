@@ -1,5 +1,6 @@
 ﻿using KursPortal.DataAccess.Abstract;
 using KursPortal.DataAccess.Context;
+using KursPortal.DTOs.DTOs.TeacherDto;
 using KursPortal.Entity.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,6 +22,11 @@ namespace KursPortal.DataAccess.Concrete
         public async Task<IEnumerable<Course>> GetCoursesWithCategoriesAndTeachersAsync()
         {
             return await _context.Courses.Include(c => c.Category).Include(c => c.Teacher).ToListAsync();
+        }
+
+        public async Task<AppUser?> GetTeacherByCourseIdAsync(Guid courseId)
+        {
+            return await _context.Courses.Where(c => c.Id == courseId).Select(c => c.Teacher).FirstOrDefaultAsync();
         }
     }
 }

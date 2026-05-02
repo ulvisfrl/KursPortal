@@ -107,5 +107,26 @@ namespace KursPortal.API.Controllers
             return Ok(result);
         }
 
+
+        [HttpGet("{courseId}/teacher")]
+        public async Task<IActionResult> GetTeacherByCourseId(Guid courseId)
+        {
+            var teacher = await _courseService.GetTeacherByCourseIdAsync(courseId);
+            if (teacher == null)
+                return NotFound();
+            return Ok(new
+            {
+                teacher.Id,
+                teacher.FirsName,
+                teacher.LastName,
+                teacher.ProfilePicture,
+                teacher.Bio,
+                teacher.ProfessionalTitle,
+                teacher.ExperienceYears,
+                teacher.Profession
+
+            });
+        }
+
     }
 }

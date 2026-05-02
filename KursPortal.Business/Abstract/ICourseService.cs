@@ -10,5 +10,6 @@ namespace KursPortal.Business.Abstract
     public interface ICourseService : IGenericService<Course>
     {
         Task<IEnumerable<Course>> GetCoursesWithCategoriesAndTeachersAsync();
+        Task<AppUser?> GetTeacherByCourseIdAsync(Guid courseId);
     }
 }

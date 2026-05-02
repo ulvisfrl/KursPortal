@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Entity\KursPortal.Entity.csproj" />
+    <ProjectReference Include="..\KursPortal.DTOs\KursPortal.DTOs.csproj" />
   </ItemGroup>
 
 </Project>

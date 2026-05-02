@@ -8,6 +8,10 @@
         public string LongDescription { get; set; }
         public decimal Price { get; set; }
         public int CourseHour { get; set; }
+        public string Item1 { get; set; }
+        public string Item2 { get; set; }
+        public string Item3 { get; set; }
+        public string Item4 { get; set; }
         public decimal? DiscountPrice { get; set; }
         public string ImageUrl { get; set; }
         public string PreviewVideoUrl { get; set; }
