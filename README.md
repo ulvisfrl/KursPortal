@@ -56,5 +56,3 @@ Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə
 
 
 
-Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə yaxındır. Bəzi əlavə funksiyalar və optimizasiya işləri üzərində inkişaf davam edir.
-Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə yaxındır. Bəzi əlavə funksiyalar və optimizasiya işləri üzərində inkişaf davam edir.
