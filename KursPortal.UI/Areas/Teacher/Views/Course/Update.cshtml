@@ -1,0 +1,121 @@
+﻿@model UpdateCourseVM
+
+@{
+    ViewData["Title"] = "Update";
+    Layout = "~/Areas/Teacher/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<style>
+    @@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #fcfcfc;
+    }
+
+    .form-input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background-color: #fff;
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        transition: all 0.2s;
+    }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+    label {
+        display: block;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 0.5rem;
+    }
+</style>
+
+<main class="flex-1 p-6 md:p-12">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex items-center justify-between mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">Yeni Kurs</h1>
+            <div class="flex gap-3">
+                <a href="/Teacher/Course/Index" class="px-5 py-2 text-gray-500 hover:text-gray-700 font-medium transition">Ləğv et</a>
+                <button type="submit" form="courseForm" class="px-6 py-2 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition shadow-sm">
+                    Yadda saxla
+                </button>
+            </div>
+        </div>
+
+        <form method="post" asp-action="Update" asp-controller="Course" asp-area="Teacher" id="courseForm" class="space-y-6">
+            <input type="hidden" asp-for="Id" />
+            <!-- General Information -->
+            <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm space-y-4">
+                <h2 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Əsas Məlumatlar</h2>
+
+                <div>
+                    <label>Kursun Başlığı</label>
+                    <input asp-for="Title" type="text" placeholder="Məs: Sıfırdan C# Proqramlaşdırma" class="form-input" required>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label>Kateqoriya</label>
+                        <select asp-for="CategoryId" class="form-input cursor-pointer">
+                            @foreach (var item in ViewBag.Categories)
+                            {
+                                <option value="@item.Id">
+                                    @item.Name
+                                </option>
+                            }
+                        </select>
+                    </div>
+                    <div>
+                        <label>Qısa Təsvir</label>
+                        <input asp-for="ShortDescription" type="text" placeholder="Bir cümlə ilə xülasə" class="form-input">
+                    </div>
+                </div>
+
+                <div>
+                    <label>Geniş Təsvir</label>
+                    <textarea asp-for="LongDescription" rows="5" placeholder="Kursun ətraflı məzmunu..." class="form-input resize-none"></textarea>
+                </div>
+            </div>
+
+            <!-- Pricing & Media -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Pricing -->
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm space-y-4">
+                    <h2 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Qiymət (AZN)</h2>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label>Əsas Qiymət</label>
+                            <input asp-for="Price" type="number" step="0.01" placeholder="0.00" class="form-input font-bold">
+                        </div>
+                        <div>
+                            <label>Endirimli Qiymət</label>
+                            <input asp-for="DiscountPrice" type="number" step="0.01" placeholder="0.00" class="form-input text-orange-600 font-bold">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Media -->
+                <div class="bg-white p-6 rounded-xl border border-gray-100 shadow-sm space-y-4">
+                    <h2 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Media</h2>
+                    <div>
+                        <label>Şəkil URL</label>
+                        <input asp-for="ImageUrl" type="text" placeholder="https://..." class="form-input text-sm">
+                    </div>
+                    <div>
+                        <label>Video URL</label>
+                        <input asp-for="PreviewVideoUrl" type="text" placeholder="https://..." class="form-input text-sm">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</main>
+
+

@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş Qadağandır | EduMaster</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex items-center justify-center p-6">
+
+    <div class="max-w-md w-full text-center">
+        <!-- İkon və Vizual -->
+        <div class="relative mb-8">
+            <div class="absolute inset-0 bg-red-100 rounded-full blur-3xl opacity-50 transform scale-150"></div>
+            <div class="relative inline-flex items-center justify-center w-24 h-24 bg-white rounded-2xl shadow-xl border border-red-50 mb-4">
+                <i class="fas fa-lock text-red-500 text-4xl"></i>
+            </div>
+            <h1 class="text-9xl font-black text-gray-200 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 -z-10 opacity-50">403</h1>
+        </div>
+
+        <!-- Mətn -->
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">Giriş Qadağandır!</h2>
+        <p class="text-gray-600 mb-10 leading-relaxed">
+            Təəssüf ki, bu səhifəyə daxil olmaq üçün lazımi səlahiyyətiniz yoxdur. Zəhmət olmasa düzgün hesab ilə daxil olduğunuzdan əmin olun.
+        </p>
+
+        <!-- Düymələr -->
+        <div class="flex flex-col space-y-3">
+            <a href="/Home/Index" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all active:scale-[0.98] flex items-center justify-center space-x-2">
+                <i class="fas fa-home"></i>
+                <span>Ana Səhifəyə Qayıt</span>
+            </a>
+
+            <a href="/Account/Login" class="w-full bg-white text-gray-700 py-4 rounded-xl font-bold border border-gray-200 hover:bg-gray-50 transition-all flex items-center justify-center space-x-2">
+                <i class="fas fa-user-circle"></i>
+                <span>Başqa Hesabla Daxil Ol</span>
+            </a>
+        </div>
+
+        <!-- Alt Məlumat -->
+        <p class="mt-12 text-sm text-gray-400">
+            Xəta olduğunu düşünürsünüzsə, <a href="#" class="text-blue-500 hover:underline">texniki dəstək</a> ilə əlaqə saxlayın.
+        </p>
+    </div>
+
+</body>
+</html>

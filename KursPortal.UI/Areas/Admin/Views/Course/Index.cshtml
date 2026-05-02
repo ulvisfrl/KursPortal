@@ -1,0 +1,124 @@
+﻿@model List<ResultCourseVM>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="p-10 space-y-10">
+
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600">
+                    <i class="fas fa-book-open text-xl"></i>
+                </div>
+                <span class="text-green-500 text-xs font-bold bg-green-50 px-2 py-1 rounded-lg">+12%</span>
+            </div>
+            <h4 class="text-gray-400 text-xs font-bold uppercase tracking-wider">Ümumi Kurslar</h4>
+            <p class="text-3xl font-black text-slate-800 mt-1">24</p>
+        </div>
+        <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-12 h-12 bg-indigo-50 rounded-2xl flex items-center justify-center text-indigo-600">
+                    <i class="fas fa-user-graduate text-xl"></i>
+                </div>
+                <span class="text-green-500 text-xs font-bold bg-green-50 px-2 py-1 rounded-lg">+8%</span>
+            </div>
+            <h4 class="text-gray-400 text-xs font-bold uppercase tracking-wider">Tələbə Sayı</h4>
+            <p class="text-3xl font-black text-slate-800 mt-1">1,240</p>
+        </div>
+        <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-12 h-12 bg-orange-50 rounded-2xl flex items-center justify-center text-orange-600">
+                    <i class="fas fa-wallet text-xl"></i>
+                </div>
+                <span class="text-red-500 text-xs font-bold bg-red-50 px-2 py-1 rounded-lg">-2%</span>
+            </div>
+            <h4 class="text-gray-400 text-xs font-bold uppercase tracking-wider">Aylıq Gəlir</h4>
+            <p class="text-3xl font-black text-slate-800 mt-1">12,450 ₼</p>
+        </div>
+        <div class="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm hover:shadow-lg transition-shadow">
+            <div class="flex justify-between items-start mb-4">
+                <div class="w-12 h-12 bg-yellow-50 rounded-2xl flex items-center justify-center text-yellow-600">
+                    <i class="fas fa-star text-xl"></i>
+                </div>
+                <span class="text-gray-400 text-xs font-bold">Sabit</span>
+            </div>
+            <h4 class="text-gray-400 text-xs font-bold uppercase tracking-wider">Orta Reytinq</h4>
+            <p class="text-3xl font-black text-slate-800 mt-1">4.8</p>
+        </div>
+    </div>
+
+    <!-- Course Table -->
+    <div class="bg-white rounded-[2.5rem] border border-gray-100 shadow-xl shadow-gray-200/30 overflow-hidden">
+        <div class="p-8 border-b border-gray-50 flex items-center justify-between">
+            <div>
+                <h2 class="text-2xl font-black text-slate-800">Kurs İdarəetməsi</h2>
+                <p class="text-sm text-gray-400 font-medium mt-1">Sistemdə olan bütün kursların siyahısı.</p>
+            </div>
+            <div class="flex space-x-3">
+                <button class="bg-gray-100 text-gray-600 px-6 py-3 rounded-2xl font-bold hover:bg-gray-200 transition">Filter</button>
+                <button class="bg-blue-600 text-white px-6 py-3 rounded-2xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition flex items-center space-x-2">
+                    <i class="fas fa-plus text-xs"></i>
+                    <span>Yeni Kurs</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead class="bg-gray-50/50">
+                    <tr>
+                        <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Kurs</th>
+                        <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Müəllim</th>
+                        <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Qiymət</th>
+                        <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest">Status</th>
+                        <th class="px-8 py-5 text-[10px] font-black text-gray-400 uppercase tracking-widest text-right">Əməliyyat</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+
+                    <tr class="hover:bg-gray-50/50 transition-colors">
+                        <td class="px-8 py-6">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-14 h-14 rounded-2xl overflow-hidden shadow-sm">
+                                    <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=150" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <p class="text-sm font-bold text-slate-800 leading-tight">ASP.NET Core Web API</p>
+                                    <p class="text-xs text-blue-600 font-bold mt-1">Backend</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <div class="flex items-center space-x-3">
+                                <img src="https://ui-avatars.com/api/?name=Ulvi&background=random" class="w-8 h-8 rounded-full">
+                                <span class="text-sm font-semibold text-gray-600">Ülvi Səfərli</span>
+                            </div>
+                        </td>
+                        <td class="px-8 py-6">
+                            <p class="text-sm font-bold text-slate-800">120.00 AZN</p>
+                        </td>
+                        <td class="px-8 py-6">
+                            <span class="px-3 py-1.5 bg-green-50 text-green-600 text-[10px] font-black uppercase rounded-lg">Aktiv</span>
+                        </td>
+                        <td class="px-8 py-6 text-right">
+                            <div class="flex justify-end space-x-2">
+                                <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition shadow-sm">
+                                    <i class="fas fa-edit text-xs"></i>
+                                </button>
+                                <button class="w-10 h-10 flex items-center justify-center rounded-xl bg-red-50 text-red-500 hover:bg-red-500 hover:text-white transition shadow-sm">
+                                    <i class="fas fa-trash-alt text-xs"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
