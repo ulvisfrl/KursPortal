@@ -1,4 +1,5 @@
-﻿using KursPortal.UI.ViewModels.CourseViewModel;
+﻿using KursPortal.UI.ViewModels.AuthViewModel;
+using KursPortal.UI.ViewModels.CourseViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KursPortal.UI.Controllers
@@ -13,8 +14,17 @@ namespace KursPortal.UI.Controllers
         }
         public async Task<IActionResult> Index(Guid id)
         {
-            var response = await _httpClient.GetFromJsonAsync<ResultCourseVM>($"courses/{id}");
-            return View(response);
+            var course = await _httpClient.GetFromJsonAsync<ResultCourseVM>($"courses/{id}");
+            var teacher = await _httpClient.GetFromJsonAsync<TeacherVM>($"courses/{id}/teacher");
+
+            var vm = new CourseDetailVM
+            {
+                Course = course,
+                Teacher = teacher
+            };
+
+            return View(vm);
         }
+
     }
 }

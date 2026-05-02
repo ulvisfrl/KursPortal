@@ -1,4 +1,4 @@
-﻿@model ResultCourseVM
+﻿@model CourseDetailVM
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,17 +9,15 @@
         <div class="absolute bottom-0 left-0 w-1/4 h-1/2 bg-indigo-600/10 blur-[100px] rounded-full -translate-x-1/2 translate-y-1/2"></div>
 
         <div class="container mx-auto px-6 relative z-10">
+            <br />
+            <br />
+            <br />
             <div class="max-w-4xl">
-                <nav class="flex mb-8 text-sm font-medium">
-                    <a href="courses.html" class="text-blue-400 hover:text-blue-300 transition">Kurslar</a>
-                    <span class="mx-3 text-slate-600">/</span>
-                    <span class="text-slate-400"></span>
-                </nav>
                 <h1 class="text-5xl md:text-7xl font-extrabold mb-8 leading-[1.1] tracking-tight">
-                    @Model.Title
+                    @Model.Course.Title
                 </h1>
                 <p class="text-xl text-slate-300 mb-10 leading-relaxed max-w-3xl">
-                    @Model.ShortDescription
+                    @Model.Course.ShortDescription
                 </p>
 
                 <div class="flex flex-wrap gap-10">
@@ -57,24 +55,24 @@
                     <h2 class="text-3xl font-bold text-slate-900 mb-8">Kurs haqqında</h2>
                     <div class="prose prose-slate max-w-none text-slate-600 space-y-6 text-lg leading-relaxed">
                         <p>
-                            @Model.LongDescription
+                            @Model.Course.LongDescription
                         </p>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-10">
                             <div class="flex gap-4 p-5 rounded-2xl bg-blue-50/50 border border-blue-100">
                                 <i class="fas fa-check-circle text-blue-600 mt-1 text-xl"></i>
-                                <span class="text-slate-800 font-medium">Panda və NumPy ilə böyük məlumat bazalarını idarə etmək</span>
+                                <span class="text-slate-800 font-medium">@Model.Course.Item1</span>
                             </div>
                             <div class="flex gap-4 p-5 rounded-2xl bg-blue-50/50 border border-blue-100">
                                 <i class="fas fa-check-circle text-blue-600 mt-1 text-xl"></i>
-                                <span class="text-slate-800 font-medium">Scikit-learn ilə prediktiv modellər qurmaq</span>
+                                <span class="text-slate-800 font-medium">@Model.Course.Item2</span>
                             </div>
                             <div class="flex gap-4 p-5 rounded-2xl bg-blue-50/50 border border-blue-100">
                                 <i class="fas fa-check-circle text-blue-600 mt-1 text-xl"></i>
-                                <span class="text-slate-800 font-medium">Matplotlib və Seaborn ilə vizuallaşdırma</span>
+                                <span class="text-slate-800 font-medium">@Model.Course.Item3</span>
                             </div>
                             <div class="flex gap-4 p-5 rounded-2xl bg-blue-50/50 border border-blue-100">
                                 <i class="fas fa-check-circle text-blue-600 mt-1 text-xl"></i>
-                                <span class="text-slate-800 font-medium">Real biznes keysləri üzərində təcrübə</span>
+                                <span class="text-slate-800 font-medium">@Model.Course.Item4</span>
                             </div>
                         </div>
                     </div>
@@ -91,7 +89,7 @@
                     <div class="flex flex-col md:flex-row items-start gap-10">
                         <div class="relative shrink-0">
                             <div class="w-40 h-40 rounded-3xl overflow-hidden shadow-2xl rotate-3 hover:rotate-0 transition-transform duration-500">
-                                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=400&q=80" class="w-full h-full object-cover" alt="Təlimçi">
+                                <img src="@Model.Teacher.ProfilePicture" class="w-full h-full object-cover" alt="Təlimçi">
                             </div>
                             <div class="absolute -bottom-4 -right-4 bg-indigo-600 text-white p-3 rounded-2xl shadow-xl">
                                 <i class="fas fa-award text-xl"></i>
@@ -99,11 +97,11 @@
                         </div>
                         <div class="space-y-4">
                             <div>
-                                <h4 class="text-2xl font-bold text-slate-900">@Model.TeacherName</h4>
-                                <p class="text-blue-600 font-bold uppercase tracking-widest text-xs mt-1">Lead Data Scientist</p>
+                                <h4 class="text-2xl font-bold text-slate-900">@Model.Teacher.FirsName @Model.Teacher.LastName</h4>
+                                <p class="text-blue-600 font-bold uppercase tracking-widest text-xs mt-1">@Model.Teacher.Profession</p>
                             </div>
                             <p class="text-slate-600 text-lg leading-relaxed">
-                                Elvin, Silicon Valley-də fəaliyyət göstərən aparıcı texnoloji şirkətlərlə əməkdaşlıq etmiş bir mütəxəssisdir. O, mürəkkəb riyazi alqoritmləri hər kəsin başa düşəcəyi dildə izah etmək bacarığı ilə tanınır.
+                                @Model.Teacher.ProfessionalTitle
                             </p>
                             <div class="flex gap-6 pt-4">
                                 <div class="text-center">
@@ -112,7 +110,7 @@
                                 </div>
                                 <div class="w-px h-10 bg-slate-100"></div>
                                 <div class="text-center">
-                                    <div class="text-2xl font-bold text-slate-900">12</div>
+                                    <div class="text-2xl font-bold text-slate-900">@Model.Teacher.ExperienceYears</div>
                                     <div class="text-xs text-slate-400 font-bold uppercase">İllik Təcrübə</div>
                                 </div>
                             </div>
@@ -143,8 +141,8 @@
                         <div class="space-y-6">
                             <div class="flex items-center justify-between">
                                 <div class="space-y-1">
-                                    <p class="text-slate-400 text-sm font-medium line-through">@Model.Price AZN</p>
-                                    <h3 class="text-4xl font-extrabold text-slate-900">@Model.DiscountPrice AZN</h3>
+                                    <p class="text-slate-400 text-sm font-medium line-through">@Model.Course.Price AZN</p>
+                                    <h3 class="text-4xl font-extrabold text-slate-900">@Model.Course.DiscountPrice AZN</h3>
                                 </div>
                                 <span class="bg-red-100 text-red-600 text-sm font-black px-4 py-2 rounded-2xl">
                                     -33%
