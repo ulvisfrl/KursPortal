@@ -43,16 +43,16 @@ Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə
 ## 📸 Screenshots
 
 ### 🏠 Home Page
-![Home](/images/home.jpg)
+![Home](KursPortal.UI/wwwroot/images/home.jpg)
 
 ### 📚 Courses Page
-![Courses](/images/courses.jpg)
+![Courses](KursPortal.UI/wwwroot/images/courses.jpg)
 
 ### 🔐 Login Page
-![Login](/images/login.jpg)
+![Login](KursPortal.UI/wwwroot/images/login.jpg)
 
 ### 📝 Register Page
-![Register](/images/register.jpg)
+![Register](KursPortal.UI/wwwroot/images/register.jpg)
 
 
 
