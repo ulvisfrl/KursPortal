@@ -1,0 +1,62 @@
+﻿@model UpdateCategoryVM
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!-- TOP HEADER -->
+<header class="h-20 glass border-b border-gray-100 flex items-center justify-between px-10 sticky top-0 z-30">
+    <div class="flex items-center space-x-4">
+        <a href="courses.html" class="text-gray-400 hover:text-slate-800 transition">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <h1 class="text-xl font-extrabold text-slate-800">Category Dəyişmə</h1>
+    </div>
+
+    <div class="flex items-center space-x-3">
+        <a href="/Admin/Category/Index" class="px-6 py-2.5 rounded-xl font-bold text-gray-500 hover:bg-gray-100 transition text-sm">Ləğv et</a>
+        <button type="submit" form="courseForm" class="bg-blue-600 text-white px-8 py-2.5 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-200 transition text-sm">
+            Yadda Saxla
+        </button>
+    </div>
+</header>
+
+<div class="p-10 max-w-4xl mx-auto w-full">
+    <form id="courseForm" method="post" asp-action="Update" asp-controller="Category" asp-area="Admin" class="space-y-8">
+        <input type="hidden" asp-for="Id" />
+        <!-- Əsas Məlumatlar Paneli -->
+        <div class="bg-white p-10 rounded-[2.5rem] shadow-sm border border-gray-100 space-y-8">
+
+            <!-- Kursun Adı -->
+            <div class="space-y-3">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Kategoriya Adı </label>
+                <input asp-for="Name" type="text" placeholder="Məsələn: Front-end Masterclass" class="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl input-focus text-slate-700 font-medium transition-all" required>
+            </div>
+
+            <!-- İkon Bölməsi -->
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-8 items-start">
+                <div class="md:col-span-3 flex flex-col items-center space-y-3 pt-2">
+                    <div id="iconPreview" class="w-24 h-24 rounded-3xl bg-blue-50 border-2 border-dashed border-blue-200 flex items-center justify-center text-blue-600 text-4xl shadow-inner transition-all overflow-hidden">
+                        <i class="fas fa-icons"></i>
+                    </div>
+                    <span class="text-[10px] font-bold text-gray-400 uppercase tracking-tighter">İkon Önizləmə</span>
+                </div>
+
+                <div class="md:col-span-9 space-y-3">
+                    <label class="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">İkon URL və ya Klası (IconUrl)</label>
+                    <input asp-for="IconUrl" id="iconInput" type="text" placeholder="fa-code və ya https://image-url.png" class="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl input-focus text-slate-700 font-medium transition-all" required>
+                    <p class="text-[11px] text-gray-400 italic px-1">FontAwesome klası (məs: fa-laptop) və ya birbaşa şəkil linki daxil edə bilərsiniz.</p>
+                </div>
+            </div>
+
+            <!-- Təsvir Bölməsi -->
+            <div class="space-y-3">
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-widest px-1">Kategoriya Haqqında (Description)</label>
+                <textarea asp-for="Description" rows="10" placeholder="Kursun məqsədi, öyrəniləcək mövzular və digər təfərrüatları bura daxil edin..." class="w-full px-6 py-5 bg-gray-50 border border-gray-100 rounded-2xl input-focus text-slate-700 font-medium transition-all resize-none" required></textarea>
+            </div>
+
+        </div>
+    </form>
+</div>
+</main>
+

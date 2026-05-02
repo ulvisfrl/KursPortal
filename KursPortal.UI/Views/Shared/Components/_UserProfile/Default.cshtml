@@ -1,0 +1,66 @@
+﻿@model UserProfileVM
+
+<div class="relative">
+    <!-- Profil Button -->
+    <button id="profileBtn" class="flex items-center space-x-3 group focus:outline-none">
+        <img src="@Model.ProfilePicture"
+             class="w-10 h-10 rounded-full border-2 border-gray-200 group-hover:border-blue-500 transition">
+        <i class="fas fa-chevron-down text-xs text-gray-400 group-hover:text-blue-500 transition"></i>
+    </button>
+
+    <!-- Dropdown -->
+    <div id="profileMenu"
+         class="hidden absolute right-0 mt-4 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden z-50">
+
+        <!-- USER INFO -->
+        <div class="px-5 py-4 bg-gray-50 border-b">
+            <p class="font-semibold text-gray-800">@Model.Name</p>
+            <p class="text-sm text-gray-500">@Model.Email</p>
+        </div>
+
+        <!-- MENU -->
+        <div class="py-2 text-sm">
+
+            <a href="/Profile/Index"
+               class="flex items-center px-5 py-3 hover:bg-gray-50 transition">
+                <i class="fas fa-user text-gray-400 mr-3"></i>
+                Məlumatlarım
+            </a>
+
+            <a href="/MyCourses/Index"
+               class="flex items-center px-5 py-3 hover:bg-gray-50 transition">
+                <i class="fas fa-book text-gray-400 mr-3"></i>
+                Kurslarım
+            </a>
+
+            <a href="/Settings/Index"
+               class="flex items-center px-5 py-3 hover:bg-gray-50 transition">
+                <i class="fas fa-cog text-gray-400 mr-3"></i>
+                Ayarlar
+            </a>
+
+        </div>
+
+        <!-- LOGOUT -->
+        <div class="border-t">
+            <a href="/Account/Logout"
+               class="flex items-center px-5 py-3 text-red-500 hover:bg-red-50 transition">
+                <i class="fas fa-sign-out-alt mr-3"></i>
+                Çıxış et
+            </a>
+        </div>
+    </div>
+</div>
+<script>
+    const btn = document.getElementById("profileBtn");
+    const menu = document.getElementById("profileMenu");
+
+    btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menu.classList.toggle("hidden");
+    });
+
+    document.addEventListener("click", () => {
+        menu.classList.add("hidden");
+    });
+</script>
