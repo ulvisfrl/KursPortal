@@ -74,5 +74,11 @@ Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə
 ### 🔐 Login Page
 ![Login](KursPortal.UI/wwwroot/images/login.jpg)
 
+### 🛒 Cart
+![Cart](KursPortal.UI/wwwroot/images/cart.jpg)
+
+###  📦  Order 
+![Order](KursPortal.UI/wwwroot/images/order.jpg)
+
 ### 📝 Register Page
 ![Register](KursPortal.UI/wwwroot/images/register.jpg)
