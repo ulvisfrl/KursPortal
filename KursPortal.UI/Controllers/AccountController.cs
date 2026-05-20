@@ -54,6 +54,8 @@ namespace KursPortal.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM loginDto)
         {
+            if(!ModelState.IsValid)
+                return View(loginDto);
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
             {
@@ -61,16 +63,35 @@ namespace KursPortal.UI.Controllers
                 return View(loginDto);
             }
 
+            if (await _userManager.IsLockedOutAsync(user))
+            {
+                var lockoutEnd = await _userManager.GetLockoutEndDateAsync(user);
+                var remainingLockTime = lockoutEnd?.ToLocalTime() - DateTime.Now;
+                ModelState.AddModelError("", $"Hesabınız kilidlənib. Qalan vaxt: {remainingLockTime?.Minutes ?? 0} dəqiqə");
+                return View(loginDto);
+            }
+
             var result = await _signInManager.PasswordSignInAsync(
                 user.UserName,
                 loginDto.Password,
                 loginDto.RememberMe,
-                lockoutOnFailure: false
+                lockoutOnFailure: true
                 );
 
+            int maxAttempts = 3;
             if (!result.Succeeded)
             {
-                ModelState.AddModelError("", "Email və ya şifrə yanlışdır");
+                var failedCount = await _userManager.GetAccessFailedCountAsync(user);
+                var remainingAttempts = maxAttempts - failedCount;
+                if (remainingAttempts > 0)
+                {
+                    ModelState.AddModelError("", $"Email və ya şifrə yanlışdır. Qalan cəhd: {remainingAttempts}");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Çox dəfə səhv giriş etdiniz. Hesabınız 15 dəqiqəlik kilidləndi.");
+                }
+
                 return View(loginDto);
             }
 

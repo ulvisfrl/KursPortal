@@ -1,0 +1,42 @@
+﻿@model List<ResultCourseVM>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="pt-28 pb-12 container mx-auto px-6">
+    <header class="mb-10">
+        <h1 class="text-3xl font-extrabold text-slate-900">Mənim Kurslarım</h1>
+        <p class="text-slate-500 mt-1">Öyrənməyə qaldığın yerdən davam et.</p>
+    </header>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        @foreach (var item in Model)
+        {
+            <div class="course-card bg-white rounded-3xl border border-slate-100 overflow-hidden">
+                <img src="@item.ImageUrl" class="w-full h-44 object-cover" alt="JavaScript">
+                <div class="p-6">
+                    <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-wider">Proqramlaşdırma</span>
+                    <h3 class="text-xl font-bold text-slate-900 mt-4 mb-2">@item.Title</h3>
+                    <p class="text-slate-500 text-sm mb-6">@item.ShortDescription</p>
+
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-xs font-bold text-slate-400">
+                            <span>Tərəqqi</span>
+                            <span class="text-indigo-600">75%</span>
+                        </div>
+                        <div class="w-full h-2 bg-slate-100 rounded-full">
+                            <div class="h-full bg-indigo-600 rounded-full" style="width: 75%"></div>
+                        </div>
+                    </div>
+
+                    <a href="#" class="block w-full text-center bg-indigo-600 text-white mt-6 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-colors">
+                        Dərsə Başla
+                    </a>
+                </div>
+            </div>
+        }
+    </div>
+
+</main>
+

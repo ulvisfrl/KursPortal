@@ -17,7 +17,8 @@ namespace KursPortal.Entity.Entities
         public int? ExperienceYears { get; set; }
         public string? Profession { get; set; }
         public ICollection<Course>? Courses { get; set; }
-        public ICollection<Enrollment> Enrollments { get; set; }
+        public ICollection<Order> Orders { get; set; }
+        public ICollection<UserCourse> UserCourses { get; set; }
         public Cart Cart { get; set; }
     }
 }

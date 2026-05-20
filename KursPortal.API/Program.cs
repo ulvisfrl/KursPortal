@@ -1,4 +1,7 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using KursPortal.API.Mapping;
+using KursPortal.API.Validators;
 using KursPortal.Business.Abstract;
 using KursPortal.Business.Concrete;
 using KursPortal.DataAccess.Abstract;
@@ -27,6 +30,13 @@ builder.Services.AddScoped<ICourseService, CourseService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IOrderService,OrderService>();
+builder.Services.AddScoped<IUserCourseRepository,UserCourseRepository>();
+builder.Services.AddScoped<IContactRepository,ContactRepository>();
+builder.Services.AddScoped<IContactService,ContactService>();
+builder.Services.AddScoped<ISubscriberRepository,SubscriberRepository>();
+builder.Services.AddScoped<ISubscriberService,SubscriberService>();
 
 builder.Services.AddAutoMapper(typeof(GeneralMapping).Assembly);
 
@@ -36,6 +46,10 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.ReferenceHandler =
             System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddValidatorsFromAssemblyContaining<ContactValidator>();
+
 
 var app = builder.Build();
 

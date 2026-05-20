@@ -1,0 +1,168 @@
+﻿@model CreateContactVM
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    :root {
+        --primary: #4F46E5;
+        --secondary: #06B6D4;
+    }
+
+    body {
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        scroll-behavior: smooth;
+        background-color: #f8fafc;
+    }
+
+    .glass-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        box-shadow: 0 25px 50px -12px rgba(79, 70, 229, 0.12);
+    }
+
+    .btn-premium {
+        background: linear-gradient(135deg, var(--primary), var(--secondary));
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        position: relative;
+        overflow: hidden;
+    }
+
+        .btn-premium:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 20px 30px -10px rgba(79, 70, 229, 0.4);
+        }
+
+    .input-group:focus-within label {
+        color: var(--primary);
+        transform: translateX(5px);
+    }
+
+    .blob-bg {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(circle, rgba(79, 70, 229, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        z-index: -1;
+        animation: pulse 15s infinite alternate;
+    }
+
+    @@keyframes pulse {
+        0% {
+            transform: translate(0, 0) scale(1);
+        }
+
+        100% {
+            transform: translate(100px, 50px) scale(1.2);
+        }
+    }
+
+    .contact-info-pill {
+        transition: all 0.3s ease;
+        border: 1px solid transparent;
+    }
+
+        .contact-info-pill:hover {
+            border-color: var(--primary);
+            background: white;
+            transform: translateX(10px);
+        }
+</style>
+
+<main class="relative pt-32 pb-20 overflow-hidden">
+    <div class="blob-bg -top-48 -left-48"></div>
+    <div class="blob-bg bottom-0 -right-48" style="animation-delay: -5s; background: radial-gradient(circle, rgba(6, 182, 212, 0.1) 0%, transparent 70%);"></div>
+
+    <div class="container mx-auto px-6">
+        <div class="flex flex-col lg:flex-row gap-16 items-center lg:items-start">
+
+            <!-- Left Content: Emphasis on Messaging -->
+            <div class="w-full lg:w-3/5 order-2 lg:order-1">
+                <div class="glass-card rounded-[3rem] p-8 lg:p-16 border-white">
+                    <div class="mb-10">
+                        <span class="text-indigo-600 font-bold tracking-widest uppercase text-xs">Müraciət Formu</span>
+                        <h1 class="text-4xl lg:text-5xl font-black mt-2 mb-4 text-slate-900">Bizə <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-cyan-500">Mesaj Göndərin</span></h1>
+                        <p class="text-slate-500 font-medium leading-relaxed">Suallarınızı, təkliflərinizi və ya şikayətlərinizi aşağıdakı forma vasitəsilə bizə çatdıra bilərsiniz. Komandamız ən qısa zamanda sizinlə əlaqə saxlayacaq.</p>
+                    </div>
+                    <form asp-controller="Contact" asp-action="Index" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div class="input-group space-y-2">
+                            <label class="text-sm font-bold text-slate-700 ml-1 transition-all">Ad və Soyad</label>
+                            <input asp-for="FullName" type="text" placeholder="Əli Məmmədov" class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white outline-none transition-all">
+                            <span asp-validation-for="FullName" class="text-red-500"></span>
+                        </div>
+                        <div class="input-group space-y-2">
+                            <label class="text-sm font-bold text-slate-700 ml-1 transition-all">E-poçt Ünvanı</label>
+                            <input asp-for="Email" type="email" placeholder="nümunə@mail.com" class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white outline-none transition-all">
+                            <span asp-validation-for="Email" class="text-red-500"></span>
+                        </div>
+                        <div class="input-group space-y-2 md:col-span-2">
+                            <label class="text-sm font-bold text-slate-700 ml-1 transition-all">Mövzu</label>
+                            <input asp-for="Title" type="text" placeholder="Müraciətinizin mövzusu" class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white outline-none transition-all">
+                            <span asp-validation-for="Title" class="text-red-500"></span>
+                        </div>
+                        <div class="input-group space-y-2 md:col-span-2">
+                            <label class="text-sm font-bold text-slate-700 ml-1 transition-all">Mesajınız</label>
+                            <textarea asp-for="Subject" rows="4" placeholder="Burada ətraflı qeyd edin..." class="w-full px-6 py-4 rounded-2xl bg-slate-50 border-2 border-transparent focus:border-indigo-500 focus:bg-white outline-none transition-all resize-none"></textarea>
+                            <span asp-validation-for="Subject" class="text-red-500"></span>
+                        </div>
+
+                        @if (TempData["Success"] != null)
+                        {
+                            <div style="color:green">@TempData["Success"]</div>
+                        }
+
+                        <div class="md:col-span-2 pt-4">
+                            <button type="submit" class="btn-premium w-full text-white py-5 rounded-2xl font-black text-lg shadow-xl flex items-center justify-center gap-3">
+                                Mesajı Göndər <i class="fas fa-paper-plane text-sm"></i>
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+
+            <div class="w-full lg:w-2/5 space-y-8 order-1 lg:order-2">
+                <div class="space-y-4">
+                    <div class="contact-info-pill p-6 rounded-[2rem] flex items-center gap-6 group">
+                        <div class="w-14 h-14 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                            <i class="fas fa-phone-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-900">Bizə zəng edin</h4>
+                            <p class="text-slate-500 text-sm">+994 (50) 123 45 67</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-pill p-6 rounded-[2rem] flex items-center gap-6 group">
+                        <div class="w-14 h-14 rounded-2xl bg-cyan-50 text-cyan-600 flex items-center justify-center text-xl shrink-0 group-hover:bg-cyan-600 group-hover:text-white transition-all">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-900">E-poçt yazın</h4>
+                            <p class="text-slate-500 text-sm">destek@kursportal.az</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-info-pill p-6 rounded-[2rem] flex items-center gap-6 group">
+                        <div class="w-14 h-14 rounded-2xl bg-rose-50 text-rose-600 flex items-center justify-center text-xl shrink-0 group-hover:bg-rose-600 group-hover:text-white transition-all">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-slate-900">Ofisimiz</h4>
+                            <p class="text-slate-500 text-sm">Bakı, Cəfər Cabbarlı küç.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative h-64 lg:h-80 rounded-[3rem] overflow-hidden shadow-2xl border-4 border-white">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d194473.1853488426!2d49.85496055!3d40.4092617!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x40307d40a035a6bd%3A0xa86758810c494678!2zQmFrxLE!5e0!3m2!1saz!2saz!4v1714123456789!5m2!1saz!2saz"
+                            class="absolute inset-0 w-full h-full border-none grayscale hover:grayscale-0 transition-all duration-1000" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</main>

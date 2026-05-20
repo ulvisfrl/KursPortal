@@ -1,8 +1,11 @@
 ﻿using AutoMapper;
 using KursPortal.DTOs.DTOs.CartDtos;
 using KursPortal.DTOs.DTOs.CategoryDtos;
+using KursPortal.DTOs.DTOs.ContactDtos;
 using KursPortal.DTOs.DTOs.CourseDtos;
+using KursPortal.DTOs.DTOs.SubscriberDtos;
 using KursPortal.Entity.Entities;
+using Microsoft.EntityFrameworkCore.Migrations.Operations;
 
 namespace KursPortal.API.Mapping
 {
@@ -27,6 +30,12 @@ namespace KursPortal.API.Mapping
                 opt => opt.MapFrom(src => src.Course.Price));
 
             CreateMap<Cart, ResultCartDto>();
+
+            CreateMap<CreateContactDto, Contact>();
+            CreateMap<UpdateContactDto, Contact>();
+            CreateMap<Contact, ResultContactDto>();
+
+            CreateMap<CreateSubscriberDto, Subscriber>();
         }
     }
 }

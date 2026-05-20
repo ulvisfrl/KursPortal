@@ -11,14 +11,15 @@ namespace KursPortal.DataAccess.Context
         {
         }
 
-        // DBSets
         public DbSet<Course> Courses { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Enrollment> Enrollments { get; set; }
-
         public DbSet<Cart> Carts { get; set; }
         public DbSet<CartItem> CartItems { get; set; }
-
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
+        public DbSet<UserCourse> UserCourses { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
+        public DbSet<Subscriber> Subscribers { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -33,18 +34,6 @@ namespace KursPortal.DataAccess.Context
                 .HasOne(c => c.Teacher)
                 .WithMany(t => t.Courses)
                 .HasForeignKey(c => c.TeacherId)
-                .OnDelete(DeleteBehavior.Restrict);
-
-            builder.Entity<Enrollment>()
-                .HasOne(e => e.AppUser)
-                .WithMany(u => u.Enrollments)
-                .HasForeignKey(e => e.AppUserId)
-                .OnDelete(DeleteBehavior.Cascade);
-
-            builder.Entity<Enrollment>()
-                .HasOne(e => e.Course)
-                .WithMany(c => c.Enrollments)
-                .HasForeignKey(e => e.CourseId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Cart>()
@@ -72,6 +61,31 @@ namespace KursPortal.DataAccess.Context
             builder.Entity<Course>()
                 .Property(c => c.DiscountPrice)
                 .HasPrecision(18, 2);
+
+            builder.Entity<OrderItem>()
+                .HasOne(oi => oi.Order)
+                .WithMany(o => o.OrderItems)
+                .HasForeignKey(oi => oi.OrderId);
+
+            builder.Entity<OrderItem>()
+                .HasOne(oi => oi.Course)
+                .WithMany(c => c.OrderItems)
+                .HasForeignKey(oi => oi.CourseId);
+
+            builder.Entity<UserCourse>()
+                .HasOne(us => us.Course)
+                .WithMany(c => c.UserCourses)
+                .HasForeignKey(us => us.CourseId);
+
+            builder.Entity<UserCourse>()
+                .HasOne(us => us.User)
+                .WithMany(u => u.UserCourses)
+                .HasForeignKey(us => us.UserId);
+
+            builder.Entity<Order>()
+                .HasOne(o => o.User)
+                .WithMany(u => u.Orders)
+                .HasForeignKey(o => o.UserId);
         }
     }
 }

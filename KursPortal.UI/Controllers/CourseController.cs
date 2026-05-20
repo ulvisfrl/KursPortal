@@ -1,9 +1,11 @@
-﻿using KursPortal.UI.ViewModels.CategoryViewModel;
+﻿using KursPortal.UI.ViewComponents;
+using KursPortal.UI.ViewModels.CategoryViewModel;
 using KursPortal.UI.ViewModels.CourseViewModel;
 using Microsoft.AspNetCore.Mvc;
 
 namespace KursPortal.UI.Controllers
 {
+    [Route("courses")]
     public class CourseController : Controller
     {
         readonly HttpClient _httpClient;
@@ -12,24 +14,26 @@ namespace KursPortal.UI.Controllers
         {
             _httpClient = httpClientFactory.CreateClient("ApiClient");
         }
-        public async Task<IActionResult> Index(Guid? categoryId)
+        [Route("")]
+        public async Task<IActionResult> Index()
         {
-            var categories = await _httpClient.GetFromJsonAsync<List<ResultCategoryVM>>("categories/getAll");
-            ViewBag.Categories = categories;
+            //var categories = await _httpClient.GetFromJsonAsync<List<ResultCategoryVM>>("categories/getAll");
+            //ViewBag.Categories = categories;
 
             var response = await _httpClient.GetFromJsonAsync<List<ResultCourseVM>>("courses/getAll");
-            if (categoryId != null)
-            {
-                response = response.Where(x => x.CategoryId == categoryId).ToList();
-            }
+            //if (categoryId != null)
+            //{
+            //    response = response.Where(x => x.CategoryId == categoryId).ToList();
+            //}
             return View(response);
         }
 
-        public async Task<JsonResult> Search(string term)
+        [HttpPost]
+        public async Task<IActionResult> Search(string term)
         {
             string endpoint = string.IsNullOrEmpty(term) ? "courses/getall" : $"courses/search?term={term}";
             var response = await _httpClient.GetFromJsonAsync<List<ResultCourseVM>>(endpoint);
-            return Json(response);
+            return View("Index", response);
         }
     }
 }

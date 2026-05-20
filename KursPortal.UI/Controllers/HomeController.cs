@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace KursPortal.UI.Controllers
 {
+    [Route("")]
     public class HomeController : Controller
     {
         public IActionResult Index()

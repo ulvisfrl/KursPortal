@@ -28,7 +28,8 @@ namespace KursPortal.Entity.Entities
 
         public Guid TeacherId { get; set; }
         public AppUser Teacher { get; set; }
-        public ICollection<Enrollment> Enrollments { get; set; }
         public ICollection<CartItem> CartItems { get; set; }
+        public ICollection<OrderItem> OrderItems { get; set; }
+        public ICollection<UserCourse> UserCourses { get; set; }
     }
 }

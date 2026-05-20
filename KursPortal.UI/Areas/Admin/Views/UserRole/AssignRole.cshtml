@@ -1,0 +1,97 @@
+﻿@model AssignRoleVM
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="p-10">
+
+    <!-- HEADER -->
+    <div class="mb-10">
+        <h1 class="text-3xl font-extrabold text-slate-800">
+            Rol Təyin Et
+        </h1>
+
+        <p class="text-gray-500 mt-2 font-medium">
+            İstifadəçiyə bir və ya bir neçə rol əlavə et
+        </p>
+    </div>
+
+    <!-- CARD -->
+    <div class="bg-white rounded-[2rem] border border-gray-100 shadow-sm p-10 max-w-3xl">
+
+        <!-- USER INFO -->
+        <div class="flex items-center space-x-5 mb-10">
+
+            <img src="https://ui-avatars.com/api/?name=@Model.FullName&background=2563eb&color=fff"
+                 class="w-20 h-20 rounded-3xl shadow-lg" />
+
+            <div>
+                <h2 class="text-2xl font-extrabold text-slate-800">
+                    @Model.FullName
+                </h2>
+
+                <p class="text-gray-400 font-semibold mt-1">
+                    @Model.Email
+                </p>
+            </div>
+
+        </div>
+
+        <!-- FORM -->
+        <form method="post">
+
+            <input type="hidden" asp-for="UserId" />
+
+            <div class="space-y-5">
+
+                @for (int i = 0; i < Model.Roles.Count; i++)
+                {
+                    <label class="flex items-center justify-between border border-gray-100 rounded-2xl px-6 py-5 hover:border-blue-200 hover:bg-blue-50 transition cursor-pointer">
+
+                        <div class="flex items-center space-x-4">
+
+                            <div class="w-12 h-12 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+
+                            <div>
+                                <h3 class="font-extrabold text-slate-800">
+                                    @Model.Roles[i].RoleName
+                                </h3>
+
+                                <p class="text-xs text-gray-400 font-semibold mt-1">
+                                    Sistem rolu
+                                </p>
+                            </div>
+
+                        </div>
+
+                        <div class="flex items-center">
+
+                            <!-- Hidden Inputs -->
+                            <input type="hidden" asp-for="Roles[i].Id" />
+                            <input type="hidden" asp-for="Roles[i].RoleName" />
+
+                            <!-- Checkbox -->
+                            <input type="checkbox"
+                                   asp-for="Roles[i].IsSelected"
+                                   class="w-5 h-5 rounded text-blue-600 border-gray-300 focus:ring-blue-500">
+                        </div>
+
+                    </label>
+                }
+
+            </div>
+
+            <button type="submit"
+                    class="mt-10 bg-blue-600 hover:bg-blue-700 transition text-white px-8 py-4 rounded-2xl font-extrabold shadow-xl shadow-blue-200">
+
+                <i class="fas fa-save mr-2"></i>
+                Dəyişiklikləri Yadda Saxla
+            </button>
+
+        </form>
+
+    </div>
+</div>

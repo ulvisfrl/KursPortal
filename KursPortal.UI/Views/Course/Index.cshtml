@@ -12,11 +12,13 @@
     <div class="container mx-auto px-6">
         <div class="max-w-4xl mx-auto text-center mb-10">
             <h1 class="text-4xl font-extrabold mb-6">Nə öyrənmək istəyirsiniz?</h1>
+            <form method="post" asp-action="Search" asp-controller="Course">
             <div class="relative group">
-                <input type="text" id="searchInput" placeholder="Kursun adı, mövzu və ya təlimçi axtarın..."
+                <input name="term" type="text" placeholder="Kursun adı, mövzu və ya təlimçi axtarın..."
                        class="w-full pl-14 pr-6 py-5 bg-white border-2 border-gray-200 focus:border-blue-500 rounded-2xl shadow-sm outline-none transition-all text-lg">
                 <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 text-xl transition-colors"></i>
             </div>
+            </form>
         </div>
 
         
@@ -29,7 +31,7 @@
         }
 
 
-        <!-- Filtrlər -->
+        @* <!-- Filtrlər -->
         <div class="flex flex-wrap gap-4 mb-10 justify-center">
             <a asp-action="Index" asp-controller="Course"
                class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md font-medium">
@@ -42,7 +44,7 @@
                     @item.Name
                 </a>
             }
-        </div>
+        </div> *@
 
         <!-- Kurslar Konteyneri (id="courseContainer" əlavə edildi) -->
         <div id="courseContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -88,79 +90,3 @@
     </div>
 </main>
 
-<script>
-    const searchInput = document.getElementById('searchInput');
-    const courseContainer = document.getElementById('courseContainer');
-
-    searchInput.addEventListener('input', function (e) {
-        const term = e.target.value.trim();
-
-        // Buraya diqqət: term boşdursa, API-nın 'getall' metoduna uyğun endpointi çağırırıq
-        // Sənin UI Controller-də yazdığın Search metodu boş gələndə getAll-u çağırmalıdır.
-        let url = `/Course/Search?term=${encodeURIComponent(term)}`;
-
-        fetch(url)
-            .then(response => {
-                if (!response.ok) throw new Error("Şəbəkə xətası");
-                return response.json();
-            })
-            .then(data => {
-                renderCourses(data);
-            })
-            .catch(error => console.error('Xəta:', error));
-    });
-
-    function renderCourses(courses) {
-        courseContainer.innerHTML = '';
-
-        if (!courses || courses.length === 0) {
-            courseContainer.innerHTML = '<div class="col-span-full text-center py-10 text-gray-500">Heç bir kurs tapılmadı.</div>';
-            return;
-        }
-
-        courses.forEach(item => {
-            // Həm PascalCase həm camelCase dəstəyi üçün obyekt property-lərini yoxlayırıq
-            const id = item.id || item.Id;
-            const title = item.title || item.Title;
-            const imageUrl = item.imageUrl || item.ImageUrl;
-            const categoryName = item.categoryName || item.CategoryName;
-            const price = item.price || item.Price;
-            const discountPrice = item.discountPrice || item.DiscountPrice;
-            const isPopular = item.isPopular || item.IsPopular;
-
-            const popularBadge = isPopular
-                ? `<div class="absolute top-4 left-4"><span class="bg-blue-600 text-white text-[10px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Populyar</span></div>`
-                : '';
-
-            const courseHtml = `
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
-                    <div class="relative overflow-hidden">
-                        <img src="${imageUrl}" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" alt="${title}">
-                        ${popularBadge}
-                    </div>
-                    <div class="p-6 flex flex-col flex-grow">
-                        <span class="text-xs font-semibold text-blue-500 uppercase tracking-wide">${categoryName}</span>
-                        <h3 class="font-bold text-xl mt-2 mb-4 text-gray-800">${title}</h3>
-                        <div class="mt-auto">
-                            <div class="flex items-center justify-between mb-4 pt-4 border-t border-gray-50">
-                                <div class="flex flex-col">
-                                    <span class="text-xs text-gray-400 line-through">${price} AZN</span>
-                                    <span class="text-xl font-bold text-blue-600">${discountPrice} AZN</span>
-                                </div>
-                                <form action="/Cart/AddToCart?courseId=${id}" method="post">
-                                    <button type="submit" class="bg-gray-900 text-white p-2.5 rounded-lg hover:bg-blue-600 transition flex items-center justify-center">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </button>
-                                </form>
-                            </div>
-                            <a href="/CourseDetail/Index/${id}" class="w-full inline-flex items-center justify-center gap-2 bg-blue-50 text-blue-700 px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-blue-600 hover:text-white transition-colors duration-300">
-                                Ətraflı bax <i class="fas fa-arrow-right text-xs"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `;
-            courseContainer.insertAdjacentHTML('beforeend', courseHtml);
-        });
-    }
-</script>
