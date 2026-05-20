@@ -29,6 +29,24 @@ Sistem daxilində əməliyyatlar **Web API** üzərindən idarə olunur və isti
 
 ---
 
+## 🛒 Cart & Order System
+- 🔹 Cart (Səbət) funksionallığı
+- Kursun səbətə əlavə olunması
+- Səbətdən kurs silinməsi
+- Səbətin tam təmizlənməsi
+- Ümumi məbləğin hesablanması
+- İstifadəçiyə məxsus səbətin idarə olunması
+
+- 🔹 Order (Sifariş) funksionallığı
+- Checkout əməliyyatı
+- Sifariş yaradılması
+- Sifariş detallarının saxlanılması
+- İstifadəçinin sifariş tarixçəsinin əldə olunması
+- Satın alınmış kursların istifadəçi hesabına avtomatik əlavə olunması
+
+  
+---
+
 ## 🔹 İstifadə olunan texnologiyalar
 - ASP.NET Core MVC
 - ASP.NET Core Web API
@@ -55,6 +73,12 @@ Layihə hazırda əsas funksionallıqlar baxımından tamamlanma mərhələsinə
 
 ### 🔐 Login Page
 ![Login](KursPortal.UI/wwwroot/images/login.jpg)
+
+### 🛒 Cart
+![Cart](KursPortal.UI/wwwroot/images/cart.jpg)
+
+###  📦  Order 
+![Order](KursPortal.UI/wwwroot/images/order.jpg)
 
 ### 📝 Register Page
 ![Register](KursPortal.UI/wwwroot/images/register.jpg)
