@@ -20,6 +20,10 @@ namespace KursPortal.DataAccess.Context
         public DbSet<UserCourse> UserCourses { get; set; }
         public DbSet<Contact> Contacts { get; set; }
         public DbSet<Subscriber> Subscribers { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<BlogCategory> BlogCategories { get; set; }
+        public DbSet<BlogComment> BlogComments { get; set; }
+        public DbSet<Faq> Faqs { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -86,6 +90,22 @@ namespace KursPortal.DataAccess.Context
                 .HasOne(o => o.User)
                 .WithMany(u => u.Orders)
                 .HasForeignKey(o => o.UserId);
+
+            builder.Entity<Blog>()
+                .HasOne(b => b.BlogCategory)
+                .WithMany(bc => bc.Blogs)
+                .HasForeignKey(b => b.BlogCategoryId);
+
+            builder.Entity<BlogComment>()
+                .HasOne(bc => bc.Blog)
+                .WithMany(b => b.BlogComments)
+                .HasForeignKey(bc => bc.BlogId);
+
+            builder.Entity<Blog>()
+                .HasOne(b => b.Teacher)
+                .WithMany(t => t.Blogs)
+                .HasForeignKey(b => b.TeacherId);
+
         }
     }
 }

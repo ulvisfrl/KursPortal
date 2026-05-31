@@ -1,0 +1,94 @@
+﻿@model List<ResultContactVM>
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden">
+    <div class="overflow-x-auto">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-gray-50/50 border-b border-gray-100">
+                    <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Göndərən</th>
+                    <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Mövzu & Başlıq</th>
+                    <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-center">Tarix</th>
+                    <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-right">Əməliyyatlar</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-50">
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="4" class="px-6 py-20 text-center">
+                            <div class="flex flex-col items-center">
+                                <div class="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center mb-4">
+                                    <i class="fas fa-envelope-open text-gray-300 text-2xl"></i>
+                                </div>
+                                <p class="text-gray-400 font-medium italic">Hələ ki heç bir müraciət yoxdur.</p>
+                            </div>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Model)
+                    {
+                        <tr class="hover:bg-blue-50/30 transition-colors group">
+                            <!-- User Info -->
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-xs">
+                                        @(!string.IsNullOrEmpty(item.FullName) ? item.FullName[0].ToString().ToUpper() : "U")
+                                    </div>
+                                    <div>
+                                        <div class="text-sm font-bold text-gray-900">@item.FullName</div>
+                                        <div class="text-xs text-gray-400 font-medium">@item.Email</div>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <!-- Subject & Title -->
+                            <td class="px-6 py-4">
+                                <div class="max-w-xs">
+                                    <div class="text-sm font-semibold text-gray-800 truncate">@item.Title</div>
+                                    <div class="text-xs text-gray-500 truncate mt-0.5">@item.Subject</div>
+                                </div>
+                            </td>
+
+                            <!-- Created Date -->
+                            <td class="px-6 py-4 text-center">
+                                <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gray-100 text-gray-600 text-[11px] font-bold whitespace-nowrap">
+                                    <i class="far fa-calendar-alt"></i>
+                                    @item.CreatedDate.ToString("dd.MM.yyyy HH:mm")
+                                </div>
+                            </td>
+
+                            <!-- Actions -->
+                            <td class="px-6 py-4 text-right">
+                                <div class="flex justify-end gap-2">
+                                    <!-- Baxış və Cavablandırma Səhifəsinə Keçid -->
+                                    <a href="/Admin/Contact/Detail/@item.Id"
+                                       class="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-600 hover:text-white transition-all shadow-sm"
+                                       title="Bax və Cavablandır">
+                                        <i class="fas fa-eye text-sm"></i>
+                                    </a>
+
+                                    <!-- Silmə üçün birbaşa POST Formu (JS-siz işləyir) -->
+                                    <form action="/Admin/Contact/Delete/@item.Id" method="post" class="inline" onsubmit="return confirm('Bu mesajı silmək istədiyinizə əminsiniz?');">
+                                        @Html.AntiForgeryToken()
+                                        <button type="submit"
+                                                class="p-2 bg-rose-50 text-rose-600 rounded-lg hover:bg-rose-600 hover:text-white transition-all shadow-sm"
+                                                title="Sil">
+                                            <i class="fas fa-trash-alt text-sm"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+

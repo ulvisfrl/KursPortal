@@ -14,11 +14,13 @@ namespace KursPortal.API.Controllers
     {
         readonly ISubscriberService _subscriberService;
         readonly IMapper _mapper;
+        readonly IMailService _mailService;
 
-        public SubscribersController(ISubscriberService subscriberService, IMapper mapper)
+        public SubscribersController(ISubscriberService subscriberService, IMapper mapper, IMailService mailService)
         {
             _subscriberService = subscriberService;
             _mapper = mapper;
+            _mailService = mailService;
         }
 
         [HttpPost]
@@ -28,5 +30,14 @@ namespace KursPortal.API.Controllers
             await _subscriberService.AddAsync(subscriber);
             return Ok();
         }
+
+        [HttpGet("getAll")]
+        public async Task<IActionResult> GetAllSubscribers()
+        {
+            var subscribers = await _subscriberService.GetAllAsync();
+            var result = _mapper.Map<List<ResultSubscriberDto>>(subscribers);
+            return Ok(result);
+        }
+
     }
 }

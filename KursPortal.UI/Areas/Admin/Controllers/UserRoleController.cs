@@ -1,5 +1,6 @@
 ﻿using KursPortal.Entity.Entities;
 using KursPortal.UI.ViewModels.AuthViewModel;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 namespace KursPortal.UI.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class UserRoleController : Controller
     {
         readonly UserManager<AppUser> _userManager;

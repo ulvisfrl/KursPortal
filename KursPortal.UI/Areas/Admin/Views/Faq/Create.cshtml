@@ -1,0 +1,61 @@
+﻿@model CreateFaqVM
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="p-10 space-y-8 flex-grow">
+    <!-- BREADCRUMBS & HEADER -->
+    <div class="flex items-center gap-4">
+        <a href="/Admin/Faq/Index" class="p-3 bg-white border border-gray-100 rounded-2xl text-gray-600 hover:text-indigo-600 hover:shadow-sm transition-all">
+            <i class="fas fa-arrow-left"></i>
+        </a>
+        <div>
+            <span class="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-[11px] font-extrabold tracking-wide uppercase">
+                FAQ MODUL <i class="fas fa-chevron-right mx-1 text-[8px]"></i> Yeni Sual
+            </span>
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight mt-1">Yeni sual və cavab əlavə et</h1>
+        </div>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="bg-white border border-gray-100 rounded-[32px] p-10 shadow-sm">
+        <form action="/Admin/Faq/Create" method="post" class="space-y-6">
+            @Html.AntiForgeryToken()
+
+            <div class="grid grid-cols-1 gap-6">
+                <!-- QUESTION -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Sual Mətni</label>
+                    <div class="relative group">
+                        <div class="absolute left-4 top-4 text-gray-300 group-focus-within:text-indigo-500 transition-colors">
+                            <i class="fas fa-question-circle"></i>
+                        </div>
+                        <input type="text" asp-for="Question" required placeholder="Məs: Kurslar nə vaxt başlayır?"
+                               class="w-full bg-gray-50 border border-gray-100 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 rounded-2xl py-4 pl-12 pr-4 text-sm font-semibold transition-all outline-none" />
+                    </div>
+                </div>
+
+                <!-- ANSWER -->
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider ml-1">Cavab Mətni</label>
+                    <textarea asp-for="Answer" rows="8" required placeholder="Sualın ətraflı cavabını bura daxil edin..."
+                              class="w-full bg-gray-50 border border-gray-100 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/5 rounded-2xl py-4 px-5 text-sm font-medium transition-all outline-none resize-none leading-relaxed"></textarea>
+                </div>
+            </div>
+
+            <!-- FORM ACTIONS -->
+            <div class="pt-6 flex items-center gap-3 border-t border-gray-50">
+                <button type="submit" class="flex-grow py-4 px-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl transition-all shadow-md shadow-indigo-100 flex items-center justify-center gap-2">
+                    <i class="fas fa-save"></i>
+                    Sualı Paylaş
+                </button>
+
+                <a href="/Admin/Faq/Index" class="py-4 px-8 bg-gray-50 hover:bg-gray-100 text-gray-500 font-bold rounded-2xl transition-all">
+                    Ləğv et
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+

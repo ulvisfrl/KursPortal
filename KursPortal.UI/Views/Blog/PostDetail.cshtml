@@ -1,0 +1,229 @@
+﻿@model CreateBlogCommentVM
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<main class="detail-page-container page-fade-in flex-grow py-12 bg-white">
+
+    <div class="container mx-auto px-6 max-w-5xl">
+
+        <!-- CATEGORY -->
+        <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+
+            <div class="text-xs text-slate-400 font-bold tracking-wider uppercase flex items-center gap-2">
+
+                <span class="text-indigo-600">
+                    @ViewBag.Blog.BlogCategory.BlogCategoryName
+                </span>
+
+                <span>•</span>
+
+                <span>15 Jan 2026</span>
+
+            </div>
+
+        </div>
+
+        <!-- TITLE -->
+        <h1 class="text-3xl md:text-5xl font-black text-slate-900 tracking-tight leading-tight mb-8">
+            @ViewBag.Blog.Title
+        </h1>
+
+        <!-- AUTHOR -->
+        <div class="flex flex-wrap items-center justify-between border-y border-slate-100 py-6 mb-10 gap-6">
+
+            <div class="flex items-center gap-3.5">
+
+                <img src="@ViewBag.Blog.TeacherImage"
+                     class="w-12 h-12 rounded-2xl object-cover ring-4 ring-indigo-50">
+
+                <div>
+
+                    <h4 class="font-extrabold text-slate-950 text-sm md:text-base leading-snug">
+                        @ViewBag.Blog.TeacherName
+                    </h4>
+
+                </div>
+
+            </div>
+
+            <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-slate-500">
+
+                <span class="flex items-center gap-1.5">
+
+                    <i class="far fa-comments text-slate-400"></i>
+
+                    @ViewBag.Blog.BlogComments.Count Rəy
+
+                </span>
+
+                <span class="text-slate-300">|</span>
+
+                <span class="flex items-center gap-1.5">
+
+                    <i class="far fa-heart"></i>
+
+                    @ViewBag.Blog.LikeCount Bəyənmə
+
+                </span>
+
+            </div>
+
+        </div>
+
+        <!-- IMAGE -->
+        <div class="relative overflow-hidden aspect-[21/9] rounded-[2rem] bg-slate-100 mb-10 shadow-sm border border-slate-100">
+
+            <img src="@ViewBag.Blog.ImageUrl"
+                 class="w-full h-full object-cover">
+
+        </div>
+
+        <!-- CONTENT -->
+        <div class="prose max-w-none text-slate-700 leading-relaxed text-sm md:text-base space-y-6">
+
+            @Html.Raw(ViewBag.Blog.LongDescription)
+
+        </div>
+
+        <!-- COMMENTS -->
+        <div class="mt-14 bg-slate-50 rounded-3xl p-6 md:p-8 border border-slate-100">
+
+            <h4 class="text-base font-extrabold text-slate-950 mb-6">
+
+                Şərhlər (@ViewBag.Blog.BlogComments.Count)
+
+            </h4>
+
+            <div class="space-y-4 mb-8">
+
+                @if (ViewBag.Blog.BlogComments != null &&
+                                ViewBag.Blog.BlogComments.Count > 0)
+                {
+                    @foreach (var item in ViewBag.Blog.BlogComments)
+                    {
+                        <div class="bg-white p-4 rounded-2xl border border-slate-100 flex gap-3 items-start shadow-sm">
+
+                            <div class="bg-indigo-50 text-indigo-600 w-10 h-10 rounded-xl flex items-center justify-center font-black text-xs uppercase shrink-0">
+
+                                @item.FullName.Substring(0, 1)
+
+                            </div>
+
+                            <div>
+
+                                <div class="flex items-center gap-2 mb-1">
+
+                                    <h5 class="font-extrabold text-slate-900 text-xs md:text-sm">
+                                        @item.FullName
+                                    </h5>
+
+                                </div>
+
+                                <p class="text-slate-600 text-xs md:text-sm leading-relaxed font-medium">
+
+                                    @item.Comment
+
+                                </p>
+
+                            </div>
+
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="bg-white rounded-2xl p-6 border border-slate-100 text-center">
+
+                        <p class="text-slate-500 text-sm font-medium">
+
+                            Hələ şərh yoxdur.
+
+                        </p>
+
+                    </div>
+                }
+
+            </div>
+
+            <!-- COMMENT FORM -->
+            <form method="post"
+                  asp-action="PostDetail"
+                  asp-controller="Blog">
+
+                <input type="hidden"
+                       asp-for="BlogId"
+                       value="@ViewBag.Blog.Id" />
+
+                <div class="border-t border-slate-200/80 pt-6">
+
+                    <div class="space-y-4">
+
+                        <h5 class="font-bold text-slate-950 mb-4 text-sm md:text-base">
+
+                            Yeni şərh yazın
+
+                        </h5>
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="text-red-500 text-sm">
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                            <input type="text"
+                                   asp-for="FullName"
+                                   placeholder="Adınız və Soyadınız"
+                                   class="bg-white border border-slate-200 rounded-xl px-4 py-3 outline-none text-xs md:text-sm focus:border-indigo-600 transition-colors w-full">
+
+                            <input type="email"
+                                   asp-for="Email"
+                                   placeholder="E-poçt ünvanınız"
+                                   class="bg-white border border-slate-200 rounded-xl px-4 py-3 outline-none text-xs md:text-sm focus:border-indigo-600 transition-colors w-full">
+
+                        </div>
+
+                        <span asp-validation-for="FullName"
+                              class="text-red-500 text-xs">
+                        </span>
+
+                        <span asp-validation-for="Email"
+                              class="text-red-500 text-xs">
+                        </span>
+
+                        <textarea rows="4"
+                                  asp-for="Comment"
+                                  placeholder="Fikrinizi bura yazın..."
+                                  class="bg-white border border-slate-200 rounded-xl px-4 py-3 outline-none text-xs md:text-sm focus:border-indigo-600 transition-colors w-full resize-none"></textarea>
+
+                        <span asp-validation-for="Comment"
+                              class="text-red-500 text-xs">
+                        </span>
+
+                        <button type="submit"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs md:text-sm px-6 py-3 rounded-xl transition-all cursor-pointer inline-block">
+
+                            Şərhi Göndər
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</main>
+
+@section Scripts
+{
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+```

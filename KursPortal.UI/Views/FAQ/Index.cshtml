@@ -1,6 +1,8 @@
-﻿
+﻿@model List<ResultFaqVM>
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int index = 0;
 }
 
 <style>
@@ -30,138 +32,29 @@
 </header>
 
 <main class="container mx-auto px-6 pb-24 max-w-5xl flex-grow">
-    
+
     <div class="faq-grid space-y-4">
 
-        <!-- Question 1 (Ümumi) -->
-        <div class="faq-item cat-general bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-            <input type="checkbox" id="faq-1" class="faq-toggle hidden">
-            <label for="faq-1" class="flex justify-between items-center p-6 lg:p-8 cursor-pointer select-none font-bold text-slate-800 hover:text-indigo-600 transition-all duration-300">
-                <span class="text-base lg:text-lg pr-4">KursPortal platforması tam olaraq nədir?</span>
-                <span class="chevron-box w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
-                    <i class="fas fa-chevron-down text-xs"></i>
-                </span>
-            </label>
-            <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
-                <div class="px-6 lg:px-8 pb-6 text-slate-600 text-sm lg:text-base leading-relaxed border-t border-slate-50 pt-4">
-                    KursPortal, Azərbaycanda rəqəmsal bacarıqları, proqramlaşdırmanı və texnoloji yenilikləri ən müasir onlayn metodlarla öyrədən və tətbiq edən yeni nəsil təhsil ekosistemidir.
+        @foreach (var item in Model)
+        {
+            <div class="faq-item cat-general bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
+                <input type="checkbox" id="faq-@index" class="faq-toggle hidden">
+                <label for="faq-@index" class="flex justify-between items-center p-6 lg:p-8 cursor-pointer select-none font-bold text-slate-800 hover:text-indigo-600 transition-all duration-300">
+                    <span class="text-base lg:text-lg pr-4">@item.Question</span>
+                    <span class="chevron-box w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
+                        <i class="fas fa-chevron-down text-xs"></i>
+                    </span>
+                </label>
+                <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
+                    <div class="px-6 lg:px-8 pb-6 text-slate-600 text-sm lg:text-base leading-relaxed border-t border-slate-50 pt-4">
+                        @item.Answer
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Question 2 (Tədris) -->
-        <div class="faq-item cat-courses bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-            <input type="checkbox" id="faq-2" class="faq-toggle hidden">
-            <label for="faq-2" class="flex justify-between items-center p-6 lg:p-8 cursor-pointer select-none font-bold text-slate-800 hover:text-indigo-600 transition-all duration-300">
-                <span class="text-base lg:text-lg pr-4">Dərslər canlı keçirilir yoxsa video yazılardır?</span>
-                <span class="chevron-box w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
-                    <i class="fas fa-chevron-down text-xs"></i>
-                </span>
-            </label>
-            <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
-                <div class="px-6 lg:px-8 pb-6 text-slate-600 text-sm lg:text-base leading-relaxed border-t border-slate-50 pt-4">
-                    Dərslərimiz hibrid (qarışıq) modeldə təşkil olunur. Siz studiyada yüksək keyfiyyətlə çəkilmiş nəzəri və praktiki video dərsləri öz vaxtınıza uyğun izləyirsiniz, hər həftə isə mentorlarınızla sual-cavab üçün interaktiv canlı sessiyalara qoşulursunuz.
-                </div>
-            </div>
-        </div>
-
-        <!-- Question 3 (Ödəniş) -->
-        <div class="faq-item cat-payments bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-            <input type="checkbox" id="faq-3" class="faq-toggle hidden">
-            <label for="faq-3" class="flex justify-between items-center p-6 lg:p-8 cursor-pointer select-none font-bold text-slate-800 hover:text-indigo-600 transition-all duration-300">
-                <span class="text-base lg:text-lg pr-4">Kurs dərsləri üçün ödənişi hissə-hissə edə bilərəm?</span>
-                <span class="chevron-box w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
-                    <i class="fas fa-chevron-down text-xs"></i>
-                </span>
-            </label>
-            <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
-                <div class="px-6 lg:px-8 pb-6 text-slate-600 text-sm lg:text-base leading-relaxed border-t border-slate-50 pt-4">
-                    Bəli, tələbələrimizin büdcəsinə uyğun olaraq daxili hissəli ödəniş, həmçinin bank kartları (Birkart, Tamkart və s.) ilə 3, 6 və ya 12 aylıq taksitlə ödəniş etmək imkanı təqdim olunur.
-                </div>
-            </div>
-        </div>
-
-        <!-- Question 4 (Karyera) -->
-        <div class="faq-item cat-certs bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-            <input type="checkbox" id="faq-4" class="faq-toggle hidden">
-            <label for="faq-4" class="flex justify-between items-center p-6 lg:p-8 cursor-pointer select-none font-bold text-slate-800 hover:text-indigo-600 transition-all duration-300">
-                <span class="text-base lg:text-lg pr-4">Kursun sonunda sertifikat verilir? Bu beynəlxalq səviyyəlidir?</span>
-                <span class="chevron-box w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
-                    <i class="fas fa-chevron-down text-xs"></i>
-                </span>
-            </label>
-            <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
-                <div class="px-6 lg:px-8 pb-6 text-slate-600 text-sm lg:text-base leading-relaxed border-t border-slate-50 pt-4">
-                    Bəli. Kursun son buraxılış layihəsini uğurla müdafiə edən hər bir məzunumuza unikal rəqəmsal ID-yə malik, həm LinkedIn, həm də digər beynəlxalq platformalarda asanlıqla doğrulana bilən rəsmi rəqəmsal sertifikat verilir.
-                </div>
-            </div>
-        </div>
-
-        <!-- Question 5 (Tədris) -->
-        <div class="faq-item cat-courses bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-            <input type="checkbox" id="faq-5" class="faq-toggle hidden">
-            <label for="faq-5" class="flex justify-between items-center p-6 lg:p-8 cursor-pointer select-none font-bold text-slate-800 hover:text-indigo-600 transition-all duration-300">
-                <span class="text-base lg:text-lg pr-4">Mənim heç bir texniki bilik və ya təcrübəm yoxdur. Kurslara qoşula bilərəm?</span>
-                <span class="chevron-box w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
-                    <i class="fas fa-chevron-down text-xs"></i>
-                </span>
-            </label>
-            <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
-                <div class="px-6 lg:px-8 pb-6 text-slate-600 text-sm lg:text-base leading-relaxed border-t border-slate-50 pt-4">
-                    Tamamilə bəli! Proqramlarımızın böyük hissəsi tam sıfırdan başlayan şəxslər üçün xüsusi dizayn olunmuşdur. Mentorlarımız sizə təməl mövzulardan başlayaraq pilləli şəkildə peşəkar səviyyəyə çatmaqda köməklik edəcəklər.
-                </div>
-            </div>
-        </div>
-
-        <!-- Question 6 (Karyera) -->
-        <div class="faq-item cat-certs bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-            <input type="checkbox" id="faq-6" class="faq-toggle hidden">
-            <label for="faq-6" class="flex justify-between items-center p-6 lg:p-8 cursor-pointer select-none font-bold text-slate-800 hover:text-indigo-600 transition-all duration-300">
-                <span class="text-base lg:text-lg pr-4">Bitirənlərə iş tapmaqda və ya təcrübə proqramında köməklik göstərilir?</span>
-                <span class="chevron-box w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
-                    <i class="fas fa-chevron-down text-xs"></i>
-                </span>
-            </label>
-            <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
-                <div class="px-6 lg:px-8 pb-6 text-slate-600 text-sm lg:text-base leading-relaxed border-t border-slate-50 pt-4">
-                    Biz fəal şəkildə karyera dəstəyi təklif edirik! Partnyor şirkətlərimiz ilə qurduğumuz şəbəkə vasitəsilə ən yaxşı nəticə göstərən tələbələrimizi müvafiq vakansiyalara və ödənişli təcrübə proqramlarına yönləndiririk. Həmçinin CV hazırlama və müsahibə simulyasiyaları təşkil edirik.
-                </div>
-            </div>
-        </div>
-
-        <!-- Question 7 (Ümumi) -->
-        <div class="faq-item cat-general bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-            <input type="checkbox" id="faq-7" class="faq-toggle hidden">
-            <label for="faq-7" class="flex justify-between items-center p-6 lg:p-8 cursor-pointer select-none font-bold text-slate-800 hover:text-indigo-600 transition-all duration-300">
-                <span class="text-base lg:text-lg pr-4">Mən qeydiyyatdan keçdikdən sonra kurs materiallarına giriş müddətsizdir?</span>
-                <span class="chevron-box w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
-                    <i class="fas fa-chevron-down text-xs"></i>
-                </span>
-            </label>
-            <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
-                <div class="px-6 lg:px-8 pb-6 text-slate-600 text-sm lg:text-base leading-relaxed border-t border-slate-50 pt-4">
-                    Bəli, qoşulduğunuz dərslərin və daxili materialların (kod bazası, tapşırıqlar, şablonlar) giriş imkanı sizin profilinizdə ömürlük olaraq saxlanılır. Gələcəkdə dərslər yeniləndikdə sizə ödənişsiz şəkildə bu yenilənmələr ötürüləcəkdir.
-                </div>
-            </div>
-        </div>
-
-        <!-- Question 8 (Ödəniş) -->
-        <div class="faq-item cat-payments bg-white rounded-[2rem] border border-slate-100 shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden">
-            <input type="checkbox" id="faq-8" class="faq-toggle hidden">
-            <label for="faq-8" class="flex justify-between items-center p-6 lg:p-8 cursor-pointer select-none font-bold text-slate-800 hover:text-indigo-600 transition-all duration-300">
-                <span class="text-base lg:text-lg pr-4">Kurs ödənişini geri qaytarmaq mümkündürmü?</span>
-                <span class="chevron-box w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 transition-all duration-300 shrink-0">
-                    <i class="fas fa-chevron-down text-xs"></i>
-                </span>
-            </label>
-            <div class="faq-content max-h-0 overflow-hidden transition-all duration-500 ease-in-out opacity-0">
-                <div class="px-6 lg:px-8 pb-6 text-slate-600 text-sm lg:text-base leading-relaxed border-t border-slate-50 pt-4">
-                    Bəli, əgər kursa başladıqdan sonrakı ilk 14 təqvim günü ərzində tədrisin sizə uyğun olmadığını düşünürsünüzsə, geri qaytarılma müraciəti edə bilərsiniz. Şərtlərə əsasən heç bir sual verilmədən ödənişiniz tam qaytarılır.
-                </div>
-            </div>
-        </div>
-
+            index++;
+        }
     </div>
+
 </main>
 
 <section class="container mx-auto px-6 pb-20 max-w-5xl">

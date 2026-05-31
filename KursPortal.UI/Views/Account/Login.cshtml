@@ -17,7 +17,12 @@
             <input type="email" asp-for="Email" placeholder="Email" class="w-full p-3 border rounded-lg">
             <input type="password" asp-for="Password" placeholder="Şifrə" class="w-full p-3 border rounded-lg">
             <button class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold">Daxil ol</button>
+            <div class="flex items-center justify-start text-sm">
+                <a asp-action="ForgotPassword" asp-controller="Account" class="text-blue-600 hover:text-blue-500 hover:underline font-medium transition duration-150">
+                    Şifrəmi unutdum?
+                </a>
+            </div>
         </form>
-        <p class="mt-4 text-center">Hesabınız yoxdur? <a href="register.html" class="text-blue-600 underline">Qeydiyyatdan keçin</a></p>
+        <p class="mt-4 text-center">Hesabınız yoxdur? <a href="/Account/Register" class="text-blue-600 underline">Qeydiyyatdan keçin</a></p>
     </div>
 </main>

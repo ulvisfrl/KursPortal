@@ -1,0 +1,75 @@
+﻿@model ResultContactVM
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <!-- SOL TƏRƏF - MESAJ MƏTNİ VƏ DETALLAR -->
+    <div class="lg:col-span-2 space-y-6">
+        <div class="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm space-y-6">
+            <!-- User Profile card -->
+            <div class="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100/50">
+                <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-extrabold text-lg">
+                    @(!string.IsNullOrEmpty(Model.FullName) ? Model.FullName[0].ToString().ToUpper() : "U")
+                </div>
+                <div>
+                    <div class="text-base font-bold text-gray-900">@Model.FullName</div>
+                    <div class="text-sm text-gray-500 font-medium">@Model.Email</div>
+                </div>
+            </div>
+
+            <!-- Message Body -->
+            <div class="space-y-3">
+                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Müraciət Mətni</h3>
+                <div class="text-sm text-gray-700 leading-relaxed bg-slate-50 p-6 rounded-2xl border border-slate-100 min-h-[150px]">
+                    @Model.Subject
+                </div>
+            </div>
+
+            <!-- Date Received -->
+            <div class="flex items-center justify-between text-xs text-gray-400 font-semibold pt-4 border-t border-gray-50">
+                <span class="flex items-center gap-1.5">
+                    <i class="far fa-calendar-alt"></i>
+                    Göndərilmə tarixi:
+                </span>
+                <span class="text-gray-700 font-bold">@Model.CreatedDate.ToString("dd.MM.yyyy HH:mm")</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- SAĞ TƏRƏF - CAVABLANDIRMA FORMASI -->
+    <div class="lg:col-span-1">
+        <div class="bg-white border border-gray-100 rounded-3xl p-8 shadow-sm space-y-6 sticky top-28">
+            <div>
+                <h2 class="text-lg font-bold text-gray-950">Məktubla Cavablandır</h2>
+                <p class="text-xs text-gray-400 mt-1 font-medium">İstifadəçiyə birbaşa e-poçt vasitəsilə cavab məktubu göndərin.</p>
+            </div>
+
+            <!-- JS-SİZ CAVABLANDIRMA FORMASI (POST metodu ilə işləyir) -->
+            <form action="/Admin/Contact/Detail" method="post" class="space-y-4">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="ContactId" value="@Model.Id" />
+                <input type="hidden" name="Email" value="@Model.Email" />
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Başlıq</label>
+                    <input type="text" name="Title" value="@Model.Title"
+                           class="w-full bg-gray-50 border border-gray-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl py-3 px-4 text-sm font-medium transition resize-none" />
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Cavab Mesajınız</label>
+                    <textarea name="Subject" rows="6" required placeholder="İstifadəçiyə yazılacaq mesajı daxil edin..."
+                              class="w-full bg-gray-50 border border-gray-200 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl py-3 px-4 text-sm font-medium transition resize-none"></textarea>
+                </div>
+
+                <button type="submit"
+                        class="w-full py-3.5 px-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl transition-all shadow-sm flex items-center justify-center gap-2">
+                    <i class="fas fa-paper-plane"></i> Göndər
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+

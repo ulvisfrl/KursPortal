@@ -2,6 +2,7 @@
 using KursPortal.UI.ViewModels.AuthViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -11,10 +12,12 @@ namespace KursPortal.UI.Controllers
     {
         readonly SignInManager<AppUser> _signInManager;
         readonly UserManager<AppUser> _userManager;
-        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager)
+        readonly HttpClient _httpClient;
+        public AccountController(SignInManager<AppUser> signInManager, UserManager<AppUser> userManager, IHttpClientFactory httpClientFactory)
         {
             _signInManager = signInManager;
             _userManager = userManager;
+            _httpClient = httpClientFactory.CreateClient("ApiClient");
         }
 
         public IActionResult Register()
@@ -54,14 +57,7 @@ namespace KursPortal.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginVM loginDto)
         {
-            if(!ModelState.IsValid)
-                return View(loginDto);
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
-            if (user == null)
-            {
-                ModelState.AddModelError("", "Email və ya şifrə yanlışdır");
-                return View(loginDto);
-            }
 
             if (await _userManager.IsLockedOutAsync(user))
             {
@@ -71,12 +67,27 @@ namespace KursPortal.UI.Controllers
                 return View(loginDto);
             }
 
+            if (!ModelState.IsValid)
+                return View(loginDto);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Email və ya şifrə yanlışdır");
+                return View(loginDto);
+            }
+
+
             var result = await _signInManager.PasswordSignInAsync(
                 user.UserName,
                 loginDto.Password,
                 loginDto.RememberMe,
                 lockoutOnFailure: true
                 );
+
+            if (result.IsLockedOut)
+            {
+                ModelState.AddModelError("", "Çox dəfə səhv giriş etdiniz. Hesabınız 15 dəqiqəlik kilidləndi.");
+                return View(loginDto);
+            }
 
             int maxAttempts = 3;
             if (!result.Succeeded)
@@ -86,10 +97,6 @@ namespace KursPortal.UI.Controllers
                 if (remainingAttempts > 0)
                 {
                     ModelState.AddModelError("", $"Email və ya şifrə yanlışdır. Qalan cəhd: {remainingAttempts}");
-                }
-                else
-                {
-                    ModelState.AddModelError("", "Çox dəfə səhv giriş etdiniz. Hesabınız 15 dəqiqəlik kilidləndi.");
                 }
 
                 return View(loginDto);
@@ -114,5 +121,48 @@ namespace KursPortal.UI.Controllers
         {
             return View();
         }
+
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string email)
+        {
+            var result = await _httpClient.PostAsJsonAsync("auth/password-reset", email);
+            return RedirectToAction("Login", "Account");
+        }
+
+        [HttpGet]
+        public IActionResult UpdatePassword(string userId, string token)
+        {
+            ViewBag.UserId = userId;
+            ViewBag.Token = token;
+
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> UpdatePassword(UpdatePasswordViewModel model)
+        {
+            var dto = new
+            {
+                UserId = model.UserId,
+                ResetToken = model.Token,
+                Password = model.Password
+            };
+
+            var response = await _httpClient.PostAsJsonAsync("auth/update-password", dto);
+
+            if (response.IsSuccessStatusCode)
+                return RedirectToAction("Login");
+
+            ModelState.AddModelError("", "Xəta baş verdi");
+
+            return View(model);
+        }
+
     }
 }

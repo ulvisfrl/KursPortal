@@ -1,0 +1,70 @@
+﻿@model List<ResultSubscriberVM>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="p-10">
+
+    <!-- PAGE HEADER -->
+    <div class="flex items-center justify-between mb-10">
+        <div>
+            <h1 class="text-3xl font-extrabold text-slate-800 tracking-tight">
+                Abunəçilər
+            </h1>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="bg-white rounded-[2rem] shadow-sm border border-gray-100 overflow-hidden">
+
+        <!-- TABLE HEADER -->
+        <div class="grid grid-cols-12 gap-4 px-8 py-5 border-b border-gray-100 bg-gray-50">
+
+            <div class="col-span-4">
+                <p class="text-xs font-extrabold uppercase tracking-widest text-gray-400">
+                    Email
+                </p>
+            </div>
+
+            <div class="col-span-3">
+                <p class="text-xs font-extrabold uppercase tracking-widest text-gray-400">
+                    Qoşulma tarixi
+                </p>
+            </div>
+
+        </div>
+
+        <!-- USERS -->
+        @foreach (var item in Model)
+        {
+            <div class="grid grid-cols-12 gap-4 px-8 py-6 border-b border-gray-50 items-center hover:bg-gray-50 transition">
+
+                <!-- USER -->
+                <div class="col-span-4 flex items-center space-x-4">
+
+                    <img src="https://ui-avatars.com/api/?name=@item.Email&background=2563eb&color=fff"
+                         class="w-14 h-14 rounded-2xl shadow-md" />
+
+                    <div>
+                        <h3 class="font-extrabold text-slate-800 text-sm">
+                            @item.Email
+                        </h3>
+                    </div>
+                </div>
+
+                <!-- EMAIL -->
+                <div class="col-span-3">
+                    <p class="text-sm font-bold text-gray-600">
+                        @item.CreatedDate
+                    </p>
+                </div>
+
+            </div>
+        }
+
+    </div>
+</div>
+
+
+

@@ -1,0 +1,88 @@
+﻿@model List<ResultFaqVM>
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="p-10 space-y-8 flex-grow">
+
+    <!-- SƏHİFƏ BAŞLIĞI BLOKUNUN BAŞLANGICI (flex tənzimləməsi ilə) -->
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-3xl font-extrabold text-gray-900 tracking-tight">FAQ İdarəetmə</h1>
+            <p class="text-gray-500 mt-1 font-medium text-sm">Tez-tez verilən suallar və cavabların siyahısı</p>
+        </div>
+        <div>
+            <!-- ƏLAVƏ ET DÜYMƏSİ -->
+            <a href="/Admin/Faq/Create" class="inline-flex items-center gap-2 px-6 py-3.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl font-bold text-sm transition-all shadow-sm shadow-indigo-200">
+                <i class="fas fa-plus"></i>
+                Yeni Sual Əlavə Et
+            </a>
+        </div> <!-- Düyməni bürüyən div-in qapanışı -->
+    </div>
+
+    <!-- FAQ TABLE CARD -->
+    <div class="bg-white border border-gray-100 rounded-3xl shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-50/50 border-b border-gray-100">
+                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider w-20 text-center">ID</th>
+                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Sual</th>
+                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider">Cavab</th>
+                        <th class="px-6 py-4 text-[11px] font-bold text-gray-400 uppercase tracking-wider text-right">Əməliyyatlar</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-50">
+                    @if (!Model.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="px-6 py-20 text-center">
+                                <div class="flex flex-col items-center text-gray-400">
+                                    <i class="fas fa-question-circle text-4xl mb-3 opacity-20"></i>
+                                    <p class="italic font-medium">Hələ ki heç bir sual əlavə edilməyib.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                    else
+                    {
+                        @foreach (var item in Model)
+                        {
+                            <tr class="hover:bg-indigo-50/30 transition-colors">
+                                <td class="px-6 py-4 text-center">
+                                    <span class="text-[10px] font-bold text-gray-400 bg-gray-100 px-2 py-1 rounded">@item.Id.ToString().Substring(0, 5)</span>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-sm font-bold text-gray-900 max-w-xs">@item.Question</div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <div class="text-xs text-gray-500 line-clamp-2 max-w-md">@item.Answer</div>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <div class="flex justify-end gap-2">
+                                        <!-- REDAKTƏ ET -->
+                                        <a href="/Admin/Faq/Update/@item.Id"
+                                           class="p-2.5 bg-amber-50 text-amber-600 rounded-xl hover:bg-amber-500 hover:text-white transition-all shadow-sm"
+                                           title="Düzəliş et">
+                                            <i class="fas fa-edit text-sm"></i>
+                                        </a>
+
+                                        <!-- SİL -->
+                                        <form action="/Admin/Faq/Delete/@item.Id" method="post" class="inline" onsubmit="return confirm('Bu FAQ məlumatını silmək istədiyinizə əminsiniz?');">
+                                            @Html.AntiForgeryToken()
+                                            <button type="submit"
+                                                    class="p-2.5 bg-rose-50 text-rose-600 rounded-xl hover:bg-rose-600 hover:text-white transition-all shadow-sm"
+                                                    title="Sil">
+                                                <i class="fas fa-trash-alt text-sm"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

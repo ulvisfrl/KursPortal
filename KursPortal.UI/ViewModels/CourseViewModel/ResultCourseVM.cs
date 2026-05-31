@@ -20,6 +20,8 @@
 
         public string CategoryName { get; set; }
         public Guid CategoryId { get; set; }
-        public string TeacherName { get; set; }
+        public string FirsName { get; set; }
+        public string LastName { get; set; }
+        public Guid TeacherId { get; set; }
     }
 }

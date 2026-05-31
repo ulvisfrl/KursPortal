@@ -4,39 +4,75 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<main class="pt-28 pb-12 container mx-auto px-6">
-    <header class="mb-10">
-        <h1 class="text-3xl font-extrabold text-slate-900">Mənim Kurslarım</h1>
-        <p class="text-slate-500 mt-1">Öyrənməyə qaldığın yerdən davam et.</p>
-    </header>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-        @foreach (var item in Model)
-        {
-            <div class="course-card bg-white rounded-3xl border border-slate-100 overflow-hidden">
-                <img src="@item.ImageUrl" class="w-full h-44 object-cover" alt="JavaScript">
-                <div class="p-6">
-                    <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-wider">Proqramlaşdırma</span>
-                    <h3 class="text-xl font-bold text-slate-900 mt-4 mb-2">@item.Title</h3>
-                    <p class="text-slate-500 text-sm mb-6">@item.ShortDescription</p>
-
-                    <div class="space-y-2">
-                        <div class="flex justify-between text-xs font-bold text-slate-400">
-                            <span>Tərəqqi</span>
-                            <span class="text-indigo-600">75%</span>
-                        </div>
-                        <div class="w-full h-2 bg-slate-100 rounded-full">
-                            <div class="h-full bg-indigo-600 rounded-full" style="width: 75%"></div>
-                        </div>
+<main class="pt-28 pb-12 container mx-auto px-6 flex flex-col min-h-[80vh]">
+    @if (Model == null || !Model.Any())
+    {
+        <!-- SƏHİFƏNİN TAM ORTASINA ORTALANMIŞ BOŞ VƏZİYYƏT (EMPTY STATE) -->
+        <div class="flex-grow flex items-center justify-center py-6">
+            <div class="flex flex-col items-center justify-center text-center py-16 px-6 bg-white border border-slate-100 rounded-[32px] shadow-sm max-w-3xl w-full mx-auto">
+                <!-- İllüstrasiya / İkon -->
+                <div class="relative mb-8">
+                    <div class="absolute inset-0 bg-indigo-100 rounded-full blur-2xl opacity-50 scale-150 animate-pulse"></div>
+                    <div class="bg-indigo-600 p-4 rounded-xl group-hover:rotate-12 transition-transform">
+                        <i class="fas fa-rocket text-white text-4xl"></i>
                     </div>
+                </div>
 
-                    <a href="#" class="block w-full text-center bg-indigo-600 text-white mt-6 py-3 rounded-xl font-bold hover:bg-indigo-700 transition-colors">
-                        Dərsə Başla
+                <!-- Mətnlər -->
+                <h2 class="text-2xl font-extrabold text-slate-900 tracking-tight">Hələ ki heç bir kursunuz yoxdur</h2>
+                <p class="text-slate-500 mt-3 mb-8 max-w-md leading-relaxed text-sm font-medium">
+                    Karyeranızda böyük bir addım atmaq və yeni texnologiyaları öyrənmək üçün hələ də gec deyil! Kurslarımıza göz gəzdirərək dərhal öyrənməyə başlaya bilərsiniz.
+                </p>
+
+                <!-- Yönləndirmə Düymələri -->
+                <div class="flex flex-col sm:flex-row items-center gap-4 w-full sm:w-auto">
+                    <a href="/Course/Index" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-2xl transition-all shadow-md shadow-indigo-100">
+                        <i class="fas fa-search-plus"></i>
+                        Kursları Kəşf Et
+                    </a>
+                    <a href="/Home/Index" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 bg-slate-50 hover:bg-slate-100 text-slate-600 font-bold rounded-2xl transition-all">
+                        Ana Səhifəyə Qayıt
                     </a>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
+    else
+    {
+        <!-- KURSLARIN SİYAHISI -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            @foreach (var item in Model)
+            {
+                <div class="course-card bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-xl hover:shadow-slate-100/50 transition-all duration-300">
+                    <div class="relative">
+                        <img src="@item.ImageUrl" class="w-full h-44 object-cover" alt="@item.Title" onerror="this.src='https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop'">
+                    </div>
+                    <div class="p-6">
+                        <span class="text-xs font-bold text-indigo-600 bg-indigo-50 px-3 py-1 rounded-full uppercase tracking-wider">
+                            Proqramlaşdırma
+                        </span>
 
+                        <h3 class="text-xl font-bold text-slate-900 mt-4 mb-2 truncate">@item.Title</h3>
+                        <p class="text-slate-500 text-sm mb-6 line-clamp-2 min-h-[40px]">@item.ShortDescription</p>
+
+                        <!-- Tərəqqi (Progress) Bar -->
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-xs font-bold text-slate-400">
+                                <span>Tərəqqi</span>
+                                <span class="text-indigo-600">75%</span>
+                            </div>
+                            <div class="w-full h-2 bg-slate-100 rounded-full">
+                                <div class="h-full bg-indigo-600 rounded-full" style="width: 75%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Dərsə başla düyməsi -->
+                        <a href="/Course/Watch/@item.Id" class="block w-full text-center bg-indigo-600 text-white mt-6 py-3.5 rounded-xl font-bold hover:bg-indigo-700 transition-colors shadow-sm">
+                            Dərsə Başla
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
 </main>
-
