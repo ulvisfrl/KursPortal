@@ -1,9 +1,8 @@
-﻿@model List<ResultCourseVM>
+﻿@model PagedCourseVM
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <br />
 <br />
 <br />
@@ -12,16 +11,16 @@
     <div class="container mx-auto px-6">
         <div class="max-w-4xl mx-auto text-center mb-10">
             <h1 class="text-4xl font-extrabold mb-6">Nə öyrənmək istəyirsiniz?</h1>
-            <form method="post" asp-action="Search" asp-controller="Course">
-            <div class="relative group">
-                <input name="term" type="text" placeholder="Kursun adı, mövzu və ya təlimçi axtarın..."
-                       class="w-full pl-14 pr-6 py-5 bg-white border-2 border-gray-200 focus:border-blue-500 rounded-2xl shadow-sm outline-none transition-all text-lg">
-                <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 text-xl transition-colors"></i>
-            </div>
+            <form method="get" asp-action="Search" asp-controller="Course">
+                <div class="relative group">
+                    <input name="term" type="text" placeholder="Kursun adı, mövzu və ya təlimçi axtarın..."
+                           class="w-full pl-14 pr-6 py-5 bg-white border-2 border-gray-200 focus:border-blue-500 rounded-2xl shadow-sm outline-none transition-all text-lg">
+                    <i class="fas fa-search absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-blue-600 text-xl transition-colors"></i>
+                </div>
             </form>
         </div>
 
-        
+
 
         @if (TempData["Error"] != null)
         {
@@ -31,24 +30,10 @@
         }
 
 
-        @* <!-- Filtrlər -->
-        <div class="flex flex-wrap gap-4 mb-10 justify-center">
-            <a asp-action="Index" asp-controller="Course"
-               class="bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md font-medium">
-                Hamısı
-            </a>
-            @foreach (var item in ViewBag.Categories)
-            {
-                <a asp-action="Index" asp-controller="Course" asp-route-categoryId="@item.Id"
-                   class="bg-white border border-gray-200 text-gray-700 px-6 py-2 rounded-lg hover:bg-gray-50 transition font-medium">
-                    @item.Name
-                </a>
-            }
-        </div> *@
 
         <!-- Kurslar Konteyneri (id="courseContainer" əlavə edildi) -->
         <div id="courseContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            @foreach (var item in Model)
+            @foreach (var item in Model.Data)
             {
                 <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
                     <div class="relative overflow-hidden">
@@ -72,11 +57,18 @@
                                     <span class="text-xs text-gray-400 line-through">@item.Price AZN</span>
                                     <span class="text-xl font-bold text-blue-600">@item.DiscountPrice AZN</span>
                                 </div>
-                                <form asp-controller="Cart" asp-action="AddToCart" method="post" asp-route-courseId="@item.Id">
-                                    <button type="submit" class="bg-gray-900 text-white p-2.5 rounded-lg hover:bg-blue-600 transition flex items-center justify-center" title="Səbətə at">
-                                        <i class="fas fa-shopping-cart"></i>
-                                    </button>
-                                </form>
+                                <div class="flex items-center gap-2">
+                                    <form asp-controller="Favorite" asp-action="AddToFavorite" method="post" asp-route-courseId="@item.Id">
+                                        <button type="submit" class="bg-white-50 text-red-500 p-2.5 rounded-lg hover:bg-red-500 hover:text-white transition" title="Səbətə at">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+                                    </form>
+                                    <form asp-controller="Cart" asp-action="AddToCart" method="post" asp-route-courseId="@item.Id">
+                                        <button type="submit" class="bg-gray-900 text-white p-2.5 rounded-lg hover:bg-blue-600 transition flex items-center justify-center" title="Səbətə at">
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </button>
+                                    </form>
+                                </div>
                             </div>
 
                             <a asp-action="Index" asp-controller="CourseDetail" asp-route-id="@item.Id" class="w-full inline-flex items-center justify-center gap-2 bg-blue-50 text-blue-700 px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-blue-600 hover:text-white transition-colors duration-300">
@@ -87,6 +79,37 @@
                 </div>
             }
         </div>
+        @if (Model.CurrentPage > 1)
+        {
+            <div class="flex justify-center mt-10 gap-2 flex-wrap">
+                @if (Model.CurrentPage > 1)
+                {
+                    <a asp-action="Index"
+                       asp-route-page="@(Model.CurrentPage - 1)"
+                       class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        Əvvəlki
+                    </a>
+                }
+
+                @for (int i = 1; i <= Model.TotalPages; i++)
+                {
+                    <a asp-action="Index"
+                       asp-route-page="@i"
+                       class="px-4 py-2 rounded-lg @(i == Model.CurrentPage ? "bg-blue-600 text-white" : "bg-gray-200 hover:bg-gray-300")">
+                        @i
+                    </a>
+                }
+
+                @if (Model.CurrentPage < Model.TotalPages)
+                {
+                    <a asp-action="Index"
+                       asp-route-page="@(Model.CurrentPage + 1)"
+                       class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+                        Növbəti
+                    </a>
+                }
+            </div>
+        }
     </div>
 </main>
 

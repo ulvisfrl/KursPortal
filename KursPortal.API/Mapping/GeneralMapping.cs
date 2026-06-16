@@ -7,6 +7,7 @@ using KursPortal.DTOs.DTOs.CategoryDtos;
 using KursPortal.DTOs.DTOs.ContactDtos;
 using KursPortal.DTOs.DTOs.CourseDtos;
 using KursPortal.DTOs.DTOs.FaqDtos;
+using KursPortal.DTOs.DTOs.FavoriteDtos;
 using KursPortal.DTOs.DTOs.SubscriberDtos;
 using KursPortal.Entity.Entities;
 using Microsoft.EntityFrameworkCore.Migrations.Operations;
@@ -34,6 +35,18 @@ namespace KursPortal.API.Mapping
                 opt => opt.MapFrom(src => src.Course.Price));
 
             CreateMap<Cart, ResultCartDto>();
+
+            CreateMap<FavoriteItem, FavoriteItemDto>()
+                .ForMember(dest => dest.Title,
+                opt => opt.MapFrom(src => src.Course.Title))
+                .ForMember(dest => dest.ImageUrl,
+                opt => opt.MapFrom(src => src.Course.ImageUrl))
+                .ForMember(dest => dest.Price,
+                opt => opt.MapFrom(src => src.Course.Price))
+                .ForMember(dest => dest.DiscountPrice,
+                opt => opt.MapFrom(src => src.Course.DiscountPrice));
+
+            CreateMap<Favorite, ResultFavoriteDto>();
 
             CreateMap<CreateContactDto, Contact>();
             CreateMap<UpdateContactDto, Contact>();
@@ -64,7 +77,6 @@ namespace KursPortal.API.Mapping
             CreateMap<CreateFaqDto, Faq>();
             CreateMap<UpdateFaqDto, Faq>();
             CreateMap<Faq, ResultFaqDto>();
-
 
 
         }

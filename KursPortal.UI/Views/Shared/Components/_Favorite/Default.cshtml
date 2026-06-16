@@ -1,0 +1,11 @@
+﻿@model ResultFavoriteVM
+
+<a href="/favorites" class="relative p-2 text-slate-600 hover:text-rose-500 transition-colors duration-200 group" title="Favorilərim">
+    <i class="fa-regular fa-heart text-xl group-hover:scale-110 transition-transform"></i>
+    @if(Model?.FavoriteItems?.Count > 0)
+    {
+        <span class="absolute top-0 right-0 bg-rose-500 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center border border-white">
+            @Model.FavoriteItems.Count
+        </span>
+    }
+</a>

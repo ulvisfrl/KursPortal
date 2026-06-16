@@ -17,6 +17,11 @@ namespace KursPortal.Business.Concrete
             _blogRepository = blogRepository;
         }
 
+        public async Task<int> GetBlogCountAsync(Guid? categoryId)
+        {
+            return await _blogRepository.GetBlogCountAsync(categoryId);
+        }
+
         public async Task<List<Blog>> GetBlogWithDetailsAsync()
         {
             return await _blogRepository.GetBlogWithDetailsAsync();
@@ -25,6 +30,11 @@ namespace KursPortal.Business.Concrete
         public async Task<Blog> GetBlogWithDetailsAsync(Guid id)
         {
             return await _blogRepository.GetBlogWithDetailsAsync(id);
+        }
+
+        public async Task<IEnumerable<Blog>> GetPagedBlogsAsync(Guid? categoryId, int page, int pageSize)
+        {
+            return await _blogRepository.GetPagedBlogsAsync(categoryId, page, pageSize);
         }
     }
 }

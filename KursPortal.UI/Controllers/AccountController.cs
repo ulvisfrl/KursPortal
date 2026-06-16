@@ -1,7 +1,8 @@
-﻿using KursPortal.Entity.Entities;
+﻿    using KursPortal.Entity.Entities;
 using KursPortal.UI.ViewModels.AuthViewModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -28,6 +29,8 @@ namespace KursPortal.UI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterVM registerDto)
         {
+            if(!ModelState.IsValid) 
+                return View(registerDto);
             var user = new AppUser
             {
                 FirsName = registerDto.FirsName,
@@ -49,14 +52,18 @@ namespace KursPortal.UI.Controllers
             return RedirectToAction("Login");
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string? returnUrl = null)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginVM loginDto)
+        public async Task<IActionResult> Login(LoginVM loginDto, string? returnUrl)
         {
+            if (!ModelState.IsValid)
+                return BadRequest(loginDto);
+
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
 
             if (await _userManager.IsLockedOutAsync(user))
@@ -104,8 +111,8 @@ namespace KursPortal.UI.Controllers
 
             var roles = await _userManager.GetRolesAsync(user);
 
-            if (roles.Contains("Admin"))
-                return RedirectToAction("Index", "Course", new { area = "Admin" });
+            if(!string.IsNullOrWhiteSpace(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
 
             return RedirectToAction("Index", "Home");
         }

@@ -12,6 +12,7 @@ namespace KursPortal.DataAccess.Abstract
     {
         Task<IEnumerable<Course>> GetCoursesWithCategoriesAndTeachersAsync();
         Task<AppUser?> GetTeacherByCourseIdAsync(Guid courseId);
-
+        Task<IEnumerable<Course>> GetPagedCoursesAsync(int page, int pageSize);
+        Task<int> GetCourseCountAsync();
     }
 }

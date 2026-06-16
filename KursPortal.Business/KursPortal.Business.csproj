@@ -9,12 +9,14 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="8.0.27" />
+    <PackageReference Include="Stripe.net" Version="52.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Entity\KursPortal.Entity.csproj" />
     <ProjectReference Include="..\KursPortal.DataAccess\KursPortal.DataAccess.csproj" />
     <ProjectReference Include="..\KursPortal.DTOs\KursPortal.DTOs.csproj" />
+    <ProjectReference Include="..\KursPortal.UI\KursPortal.UI.csproj" />
   </ItemGroup>
 
 </Project>

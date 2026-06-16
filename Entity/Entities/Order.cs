@@ -12,7 +12,9 @@ namespace KursPortal.Entity.Entities
         public Guid UserId { get; set; }
         public AppUser User { get; set; }
         public decimal TotalPrice { get; set; }
-        public bool IsPaid { get; set; }
+        public bool IsPaid { get; set; } = false;
+        public string Status { get; set; } = "Pending";
+        public string? StripeSessionId { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
     }
 }

@@ -1,0 +1,45 @@
+﻿@model UserProfileVM
+
+<div class="relative group">
+    <button class="flex items-center space-x-3 focus:outline-none py-2">
+        <div class="text-right hidden sm:block">
+            <p class="text-sm font-extrabold text-gray-800 leading-none">@Model.FirstName @Model.LastName</p>
+            <p class="text-[10px] text-blue-600 font-bold uppercase mt-1">Teacher</p>
+        </div>
+        <div class="relative">
+            <img src="https://ui-avatars.com/api/?name=Ulvi+Safarli&background=2563eb&color=fff&bold=true"
+                 class="w-11 h-11 rounded-[14px] border-2 border-white shadow-md group-hover:border-blue-500 transition-all" alt="Admin">
+            <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></div>
+        </div>
+        <i class="fas fa-chevron-down text-[10px] text-gray-400 group-hover:text-blue-600 transition-transform group-hover:rotate-180"></i>
+    </button>
+
+    <!-- Dropdown Menu -->
+    <div class="absolute right-0 w-64 mt-2 origin-top-right bg-white border border-gray-100 rounded-[1.5rem] shadow-2xl shadow-gray-200/50 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
+        <div class="p-3">
+            <div class="px-4 py-4 bg-gray-50 rounded-2xl mb-2">
+                <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1">Hesab</p>
+                <p class="text-sm font-bold text-gray-800 truncate">@Model.Email</p>
+            </div>
+            <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-blue-50 text-gray-600 hover:text-blue-600 transition group/item">
+                <div class="w-8 h-8 rounded-lg bg-gray-100 group-hover/item:bg-blue-100 flex items-center justify-center transition">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <span class="text-sm font-bold">Profilim</span>
+            </a>
+            <a href="#" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-blue-50 text-gray-600 hover:text-blue-600 transition group/item">
+                <div class="w-8 h-8 rounded-lg bg-gray-100 group-hover/item:bg-blue-100 flex items-center justify-center transition">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <span class="text-sm font-bold">Balans</span>
+            </a>
+            <div class="h-px bg-gray-50 my-2"></div>
+            <a href="index.html" class="flex items-center space-x-3 p-3 rounded-xl hover:bg-red-50 text-red-500 transition group/item">
+                <div class="w-8 h-8 rounded-lg bg-red-100 flex items-center justify-center transition">
+                    <i class="fas fa-power-off"></i>
+                </div>
+                <span class="text-sm font-bold">Çıxış et</span>
+            </a>
+        </div>
+    </div>
+</div>

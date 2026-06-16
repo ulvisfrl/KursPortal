@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace KursPortal.UI.Controllers
 {
+    [Route("mycourses")]
     public class StudentCoursesController : Controller
     {
         readonly UserManager<AppUser> _userManager;

@@ -15,25 +15,29 @@ namespace KursPortal.UI.Controllers
             _httpClient = httpClientFactory.CreateClient("ApiClient");
         }
         [Route("")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1)
         {
-            //var categories = await _httpClient.GetFromJsonAsync<List<ResultCategoryVM>>("categories/getAll");
-            //ViewBag.Categories = categories;
-
-            var response = await _httpClient.GetFromJsonAsync<List<ResultCourseVM>>("courses/getAll");
-            //if (categoryId != null)
-            //{
-            //    response = response.Where(x => x.CategoryId == categoryId).ToList();
-            //}
+            var response = await _httpClient.GetFromJsonAsync<PagedCourseVM>($"courses/paged?page={page}&pageSize=20");
             return View(response);
         }
 
-        [HttpPost]
+        [HttpGet("search")]
         public async Task<IActionResult> Search(string term)
         {
-            string endpoint = string.IsNullOrEmpty(term) ? "courses/getall" : $"courses/search?term={term}";
-            var response = await _httpClient.GetFromJsonAsync<List<ResultCourseVM>>(endpoint);
-            return View("Index", response);
+            string endpoint = string.IsNullOrEmpty(term)
+                ? "courses/getall"
+                : $"courses/search?term={term}";
+
+            var courses = await _httpClient.GetFromJsonAsync<List<ResultCourseVM>>(endpoint);
+
+            var model = new PagedCourseVM
+            {
+                Data = courses,
+                CurrentPage = 1,
+                TotalPages = 1
+            };
+
+            return View("Index", model);
         }
     }
 }

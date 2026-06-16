@@ -1,0 +1,123 @@
+﻿@model AppUser
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<header class="pt-32 pb-8 bg-gradient-to-b from-indigo-50/30 via-transparent to-transparent relative">
+    <!-- Zərif arxa fon bəzəyi (Abartmadan incə rəng) -->
+    <div class="absolute top-10 right-10 w-72 h-72 bg-indigo-200/20 rounded-full filter blur-3xl -z-10"></div>
+
+    <div class="container mx-auto px-6 max-w-5xl">
+        <!-- Geri qayıt keçidi -->
+        <a href="/Instructor/Index" class="inline-flex items-center gap-2 text-slate-500 hover:text-indigo-600 font-bold text-sm transition-colors mb-6 group">
+            <i class="fas fa-arrow-left group-hover:-translate-x-1 transition-transform"></i>
+            Müəllimlərimizə qayıt
+        </a>
+
+        <!-- Təkmilləşdirilmiş Profil Kartı -->
+        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100/80 flex flex-col md:flex-row items-center gap-8">
+            <!-- Şəkil (Daha yaxşı çərçivə və kölgə ilə) -->
+            <div class="relative w-36 h-36 md:w-40 md:h-40 flex-shrink-0">
+                <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500 to-cyan-400 rounded-2xl rotate-3 scale-102 opacity-10"></div>
+                <img src="@Model.ProfilePicture"
+                     class="relative w-full h-full rounded-2xl object-cover border-4 border-white shadow-md z-10"
+                     alt="@Model.FirsName @Model.LastName"
+                     onerror="this.src='https://placehold.co/150x150/f1f5f9/64748b?text=EM'">
+            </div>
+
+            <!-- Əsas məlumatlar -->
+            <div class="text-center md:text-left flex-grow">
+                <div class="flex flex-col md:flex-row md:items-center gap-3 mb-2.5">
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-600 bg-indigo-50 px-3 py-1 rounded-md w-max mx-auto md:mx-0">
+                        Müəllim profili
+                    </span>
+                    <!-- Təcrübə ili -->
+                    <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-md w-max mx-auto md:mx-0">
+                        <i class="fas fa-briefcase mr-1"></i> @Model.ExperienceYears il+ Təcrübə
+                    </span>
+                </div>
+
+                <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900 leading-tight">
+                    @Model.FirsName @Model.LastName
+                </h1>
+
+                <p class="text-slate-500 font-medium text-sm md:text-base mt-1.5 mb-5">
+                    Sahə: <span class="text-indigo-600 font-semibold">@Model.ProfessionalTitle</span>
+                </p>
+
+                <!-- Sadə Məlumat Siyahısı (E-mail, LinkedIn) -->
+                <div class="flex flex-wrap justify-center md:justify-start gap-3 pt-4 border-t border-slate-100 text-xs font-semibold">
+                    <!-- E-mail -->
+                    <a href="mailto:@Model.Email" class="flex items-center gap-2 px-3 py-2 bg-slate-50 hover:bg-indigo-50 rounded-xl text-slate-600 hover:text-indigo-600 border border-slate-100 transition-colors">
+                        <i class="fas fa-envelope text-indigo-500"></i>
+                        <span>@Model.Email</span>
+                    </a>
+
+                    <!-- LinkedIn -->
+                    <a href="https://linkedin.com/@Model.FirsName@Model.LastName" target="_blank" class="flex items-center gap-2 px-3 py-2 bg-slate-50 hover:bg-[#0A66C2]/10 rounded-xl text-slate-600 hover:text-[#0A66C2] border border-slate-100 transition-colors">
+                        <i class="fab fa-linkedin text-[#0A66C2]"></i>
+                        <span>LinkedIn Profilini Ziyarət Et</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main class="container mx-auto px-6 pb-24 max-w-5xl">
+    <div class="space-y-8">
+
+        <!-- Haqqında (Bio) -->
+        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100/80">
+            <h2 class="text-lg font-bold text-slate-900 mb-4 flex items-center gap-2.5">
+                <span class="w-1 h-5 bg-indigo-600 rounded-full"></span>
+                Müəllim Haqqında
+            </h2>
+            <div class="text-slate-600 leading-relaxed font-medium text-sm md:text-base space-y-4">
+                <p>
+                    @Model.Bio
+                </p>
+            </div>
+        </div>
+
+        <!-- Tədris etdiyi Mövcud Kurslar -->
+        <div class="bg-white rounded-3xl p-6 md:p-8 shadow-[0_8px_30px_rgb(0,0,0,0.02)] border border-slate-100/80">
+            <h2 class="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2.5">
+                <span class="w-1 h-5 bg-indigo-600 rounded-full"></span>
+                Tədris etdiyi Mövcud Kurslar
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                @foreach (var item in Model.Courses)
+                {
+                    <div class="border border-slate-100/80 rounded-2xl p-5 hover:border-indigo-200 hover:shadow-[0_8px_25px_rgba(79,70,229,0.05)] transition-all duration-300 group flex flex-col justify-between">
+                        <div>
+                            <span class="bg-indigo-50 text-indigo-600 text-[10px] font-bold px-2.5 py-1 rounded-md inline-block mb-3.5">
+                                @item.Category.Name
+                            </span>
+                            <h4 class="font-bold text-slate-800 text-base group-hover:text-indigo-600 transition-colors mb-2">
+                                @item.Title
+                            </h4>
+                            <p class="text-slate-500 text-xs leading-relaxed mb-4">
+                                @item.ShortDescription
+                            </p>
+                        </div>
+                        <div class="flex justify-between items-center pt-4 border-t border-slate-50">
+                            <span class="text-indigo-600 font-extrabold text-base">@item.Price AZN</span>
+                            <a href="/CourseDetail/@item.Id" class="text-slate-500 group-hover:text-indigo-600 text-xs font-bold flex items-center gap-1 transition-colors">
+                                Ətraflı bax
+                                <i class="fas fa-arrow-right text-[10px] group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                }
+            </div>
+        </div>
+
+    </div>
+</main>
+
+

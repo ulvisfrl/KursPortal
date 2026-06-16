@@ -1,0 +1,191 @@
+﻿@model CreateInstructorVM
+
+@{
+    Layout = "~/Areas/Teacher/Views/Shared/_TeacherLayout.cshtml";
+}
+
+<div class="lg:col-span-2">
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="mb-4 p-4 rounded-xl bg-green-100 text-green-700">
+            @TempData["Success"]
+        </div>
+    }
+
+    <form asp-action="Index"
+          asp-controller="Profile"
+          method="post"
+          class="bg-white rounded-3xl border border-gray-100 p-8 shadow-sm space-y-6">
+
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="All" class="text-red-500"></div>
+
+        <!-- Bölmə 1: Şəxsi məlumatlar -->
+        <div>
+            <h3 class="text-lg font-bold text-slate-800 flex items-center mb-6">
+                <i class="far fa-id-card text-blue-600 mr-2.5"></i>
+                Şəxsi məlumatlar
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div class="space-y-2">
+                    <label asp-for="FirsName"
+                           class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        Ad
+                    </label>
+
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="far fa-user"></i>
+                        </span>
+
+                        <input asp-for="FirsName"
+                               class="w-full bg-slate-50 hover:bg-slate-100 focus:bg-white border-2 border-transparent focus:border-blue-500 rounded-2xl py-3.5 pl-11 pr-4 transition font-medium text-slate-800 text-sm" />
+
+                        <span asp-validation-for="FirsName" class="text-red-500 text-sm"></span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label asp-for="LastName"
+                           class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        Soyad
+                    </label>
+
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="far fa-user"></i>
+                        </span>
+
+                        <input asp-for="LastName"
+                               class="w-full bg-slate-50 hover:bg-slate-100 focus:bg-white border-2 border-transparent focus:border-blue-500 rounded-2xl py-3.5 pl-11 pr-4 transition font-medium text-slate-800 text-sm" />
+
+                        <span asp-validation-for="LastName" class="text-red-500 text-sm"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="border-t border-gray-100"></div>
+
+        <!-- Peşəkar məlumatlar -->
+        <div>
+            <h3 class="text-lg font-bold text-slate-800 flex items-center mb-6">
+                <i class="fas fa-briefcase text-blue-600 mr-2.5"></i>
+                Peşəkar məlumatlar
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div class="space-y-2">
+                    <label asp-for="ProfessionalTitle"
+                           class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        Professional Title
+                    </label>
+
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-award"></i>
+                        </span>
+
+                        <input asp-for="ProfessionalTitle"
+                               class="w-full bg-slate-50 hover:bg-slate-100 focus:bg-white border-2 border-transparent focus:border-blue-500 rounded-2xl py-3.5 pl-11 pr-4 transition font-medium text-slate-800 text-sm" />
+
+                        <span asp-validation-for="ProfessionalTitle" class="text-red-500 text-sm"></span>
+                    </div>
+                </div>
+
+                <div class="space-y-2">
+                    <label asp-for="Profession"
+                           class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        Peşə
+                    </label>
+
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="fas fa-user-tag"></i>
+                        </span>
+
+                        <input asp-for="Profession"
+                               class="w-full bg-slate-50 hover:bg-slate-100 focus:bg-white border-2 border-transparent focus:border-blue-500 rounded-2xl py-3.5 pl-11 pr-4 transition font-medium text-slate-800 text-sm" />
+
+                        <span asp-validation-for="Profession" class="text-red-500 text-sm"></span>
+                    </div>
+                </div>
+
+                <div class="space-y-2 md:col-span-2">
+                    <label asp-for="ExperienceYears"
+                           class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                        Təcrübə ili
+                    </label>
+
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                            <i class="far fa-clock"></i>
+                        </span>
+
+                        <input asp-for="ExperienceYears"
+                               type="number"
+                               min="0"
+                               max="80"
+                               class="w-full bg-slate-50 hover:bg-slate-100 focus:bg-white border-2 border-transparent focus:border-blue-500 rounded-2xl py-3.5 pl-11 pr-4 transition font-medium text-slate-800 text-sm" />
+
+                        <span asp-validation-for="ExperienceYears" class="text-red-500 text-sm"></span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="border-t border-gray-100"></div>
+
+        <!-- Bio -->
+        <div class="space-y-2">
+            <h3 class="text-lg font-bold text-slate-800 flex items-center mb-4">
+                <i class="far fa-file-alt text-blue-600 mr-2.5"></i>
+                Haqqında
+            </h3>
+
+            <textarea asp-for="Bio"
+                      rows="5"
+                      class="w-full bg-slate-50 hover:bg-slate-100 focus:bg-white border-2 border-transparent focus:border-blue-500 rounded-2xl p-4 transition font-medium text-slate-800 text-sm"></textarea>
+
+            <span asp-validation-for="Bio" class="text-red-500 text-sm"></span>
+        </div>
+
+        <!-- Profil şəkli -->
+        <div class="space-y-2">
+            <label asp-for="ProfilePicture"
+                   class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                Profil şəkli URL
+            </label>
+
+            <input asp-for="ProfilePicture"
+                   class="w-full bg-slate-50 hover:bg-slate-100 focus:bg-white border-2 border-transparent focus:border-blue-500 rounded-2xl py-3.5 px-4 transition font-medium text-slate-800 text-sm" />
+
+            <span asp-validation-for="ProfilePicture" class="text-red-500 text-sm"></span>
+        </div>
+
+        <div class="flex justify-end gap-4 pt-4 border-t border-gray-100">
+
+            <a asp-area="Teacher"
+               asp-controller="Course"
+               asp-action="Index"
+               class="px-6 py-3 rounded-2xl bg-slate-100 text-slate-700 font-semibold hover:bg-slate-200">
+                Ləğv et
+            </a>
+
+            <button type="submit"
+                    class="px-8 py-3 rounded-2xl bg-blue-600 text-white font-semibold hover:bg-blue-700">
+                Yadda saxla
+            </button>
+
+        </div>
+
+    </form>
+</div>
+

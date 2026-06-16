@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
+[Route("cart")]
 public class CartController : Controller
 {
     private readonly HttpClient _httpClient;
@@ -27,13 +28,13 @@ public class CartController : Controller
     [HttpPost]
     public async Task<IActionResult> AddToCart(Guid courseId)
     {
-        var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
-        if (string.IsNullOrEmpty(userIdString))
+        if (string.IsNullOrEmpty(userId))
             return RedirectToAction("Login", "Account");
 
         var response = await _httpClient.PostAsync(
-            $"carts/add?userId={userIdString}&courseId={courseId}",
+            $"carts/add?userId={userId}&courseId={courseId}",
             null);
 
         if (!response.IsSuccessStatusCode)
@@ -45,7 +46,7 @@ public class CartController : Controller
 
         TempData["Success"] = "Kurs səbətə əlavə edildi!";
         return RedirectToAction("Index");
-    }   
+    }
 
     [HttpPost]
     public async Task<IActionResult> Clear()

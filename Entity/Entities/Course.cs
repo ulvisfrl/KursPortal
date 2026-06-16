@@ -17,10 +17,10 @@ namespace KursPortal.Entity.Entities
         public string ImageUrl { get; set; }
         public string PreviewVideoUrl { get; set; }
         public double Rating { get; set; } = 5.0;
-        public string Item1 { get; set; }
-        public string Item2 { get; set; }
-        public string Item3 { get; set; }
-        public string Item4 { get; set; }
+        public string? Item1 { get; set; }
+        public string? Item2 { get; set; }
+        public string? Item3 { get; set; }
+        public string? Item4 { get; set; }
         public bool IsPopular { get; set; }
         public int CourseHour { get; set; }
         public Guid CategoryId { get; set; }
@@ -29,6 +29,7 @@ namespace KursPortal.Entity.Entities
         public Guid TeacherId { get; set; }
         public AppUser Teacher { get; set; }
         public ICollection<CartItem> CartItems { get; set; }
+        public ICollection<FavoriteItem> FavoriteItems { get; set; }
         public ICollection<OrderItem> OrderItems { get; set; }
         public ICollection<UserCourse> UserCourses { get; set; }
     }

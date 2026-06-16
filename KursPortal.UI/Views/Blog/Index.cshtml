@@ -1,4 +1,4 @@
-﻿@model List<ResultBlogVM>
+﻿@model PagedBlogVM
 
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,7 +9,6 @@
 <main class="flex-grow py-12">
     <div class="container mx-auto px-6 max-w-7xl">
 
-        <!-- Breadcrumb Header -->
         <div class="mb-10 text-left">
             <h1 class="text-3xl md:text-4xl font-black text-slate-900 tracking-tight">Məqalələrimiz</h1>
             <p class="text-slate-500 text-sm mt-1 max-w-2xl">Mütəxəssislərimiz tərəfindən yazılmış ən yeni texnoloji, dizayn və karyera məsləhətlərini oxuyun.</p>
@@ -18,131 +17,173 @@
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
 
             <div class="lg:col-span-8 space-y-12">
-                @foreach (var item in Model)
+                @if (Model != null && Model.Data.Any())
                 {
-                    <article class="blog-card cat-tech bg-white border border-slate-150 rounded-3xl overflow-hidden shadow-sm hover:shadow-md">
-                        <div class="relative overflow-hidden aspect-video max-h-[380px] bg-slate-100 border-b border-slate-100">
-                            <img src="@item.ImageUrl" alt="Post image" class="blog-img w-full h-full object-cover transition-transform duration-500">
+                    @foreach (var item in Model.Data)
+                    {
+                        <article class="blog-card cat-tech bg-white border border-slate-150 rounded-3xl overflow-hidden shadow-sm hover:shadow-md">
+                            <div class="relative overflow-hidden aspect-video max-h-[380px] bg-slate-100 border-b border-slate-100">
+                                <img src="@item.ImageUrl" alt="Post image" class="blog-img w-full h-full object-cover transition-transform duration-500">
 
-                            <div class="absolute bottom-4 left-6 bg-indigo-600 text-white px-5 py-2.5 rounded-2xl shadow-lg shadow-indigo-500/30 text-center z-10 border border-indigo-500/20">
-                                <span class="block text-xl font-black leading-none">@item.CreatedDate.Day</span>
-                                <span class="block text-[10px] font-extrabold uppercase tracking-widest mt-1">@item.CreatedDate.ToString("MMM")</span>
-                            </div>
-
-                        </div>
-
-                        <div class="p-6 md:p-8">
-                            <label for="modal-post-1" class="text-xl md:text-2xl font-black text-slate-900 leading-tight mb-4 hover:text-indigo-600 transition-colors cursor-pointer block">
-                                @item.Title
-                            </label>
-
-                            <p class="text-slate-500 text-xs md:text-sm leading-relaxed mb-6 font-medium">
-                                @item.ShortDescription
-                            </p>
-
-                            <div class="flex flex-wrap items-center justify-between pt-5 border-t border-slate-100 gap-4">
-                                <div class="flex items-center gap-4 text-xs font-semibold text-slate-500">
-                                    <div class="flex items-center gap-2">
-                                        <img src="@item.TeacherImage"
-                                             alt="Author"
-                                             class="w-6 h-6 rounded-full object-cover">
-                                        <span class="text-slate-900 font-bold">
-                                            @item.TeacherName
-                                        </span>
-                                    </div>
-                                    <span class="text-slate-300">|</span>
-                                    <div class="flex items-center gap-1.5">
-                                        <i class="far fa-comments text-slate-400"></i>
-                                        <span>@item.BlogComments.Count</span>
-                                    </div>
-                                    <span class="text-slate-300">|</span>
-                                    <!-- Dynamic CSS Checkbox Like Mechanism -->
-                                    <input type="checkbox" id="like-p1" class="hidden peer/like1">
-                                    <label for="like-p1" class="flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 transition-colors select-none peer-checked/like1:text-indigo-600 font-bold">
-                                        <i class="far fa-heart peer-checked/like1:hidden"></i>
-                                        <i class="fas fa-heart hidden peer-checked/like1:inline text-indigo-600"></i>
-                                        <span>@item.LikeCount</span><span class="hidden peer-checked/like1:inline">+1</span>
-                                    </label>
+                                <div class="absolute bottom-4 left-6 bg-indigo-600 text-white px-5 py-2.5 rounded-2xl shadow-lg shadow-indigo-500/30 text-center z-10 border border-indigo-500/20">
+                                    <span class="block text-xl font-black leading-none">@item.CreatedDate.Day</span>
+                                    <span class="block text-[10px] font-extrabold uppercase tracking-widest mt-1">@item.CreatedDate.ToString("MMM")</span>
                                 </div>
-
-                                <a href="/Blog/PostDetail/@item.Id" for="modal-post-1" class="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1 cursor-pointer transition-colors">
-                                    Ətraflı Oxu <i class="fas fa-arrow-right text-[10px]"></i>
-                                </a>
                             </div>
-                        </div>
-                    </article>
 
+                            <div class="p-6 md:p-8">
+                                <label class="text-xl md:text-2xl font-black text-slate-900 leading-tight mb-4 hover:text-indigo-600 transition-colors cursor-pointer block">
+                                    @item.Title
+                                </label>
+
+                                <p class="text-slate-500 text-xs md:text-sm leading-relaxed mb-6 font-medium">
+                                    @item.ShortDescription
+                                </p>
+
+                                <div class="flex flex-wrap items-center justify-between pt-5 border-t border-slate-100 gap-4">
+                                    <div class="flex items-center gap-4 text-xs font-semibold text-slate-500">
+                                        <div class="flex items-center gap-2">
+                                            <img src="@item.TeacherImage" alt="Author" class="w-6 h-6 rounded-full object-cover">
+                                            <span class="text-slate-900 font-bold">
+                                                @item.TeacherName
+                                            </span>
+                                        </div>
+                                        <span class="text-slate-300">|</span>
+                                        <div class="flex items-center gap-1.5">
+                                            <i class="far fa-comments text-slate-400"></i>
+                                            <span>@(item.BlogComments?.Count ?? 0)</span>
+                                        </div>
+                                        <span class="text-slate-300">|</span>
+
+                                        <input type="checkbox" id="like-@item.Id" class="hidden peer/like1">
+                                        <label for="like-@item.Id" class="flex items-center gap-1.5 cursor-pointer hover:text-indigo-600 transition-colors select-none peer-checked/like1:text-indigo-600 font-bold">
+                                            <i class="far fa-heart peer-checked/like1:hidden"></i>
+                                            <i class="fas fa-heart hidden peer-checked/like1:inline text-indigo-600"></i>
+                                            <span>@item.LikeCount</span><span class="hidden peer-checked/like1:inline">+1</span>
+                                        </label>
+                                    </div>
+
+                                    <a href="/Blog/PostDetail/@item.Id" class="text-xs font-bold text-indigo-600 hover:text-indigo-700 flex items-center gap-1 cursor-pointer transition-colors">
+                                        Ətraflı Oxu <i class="fas fa-arrow-right text-[10px]"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </article>
+                    }
+                }
+                else
+                {
+                    <p class="text-center text-slate-500 py-12">Hələ ki heç bir məqalə paylaşılmayıb.</p>
                 }
             </div>
 
             <aside class="lg:col-span-4 space-y-8">
 
-                <!-- Search Widget -->
                 <div class="bg-white border border-slate-150 rounded-3xl p-6 shadow-sm">
                     <h4 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
                         <i class="fas fa-search text-indigo-600 text-sm"></i> Məqalə Axtar
                     </h4>
-                    <div class="relative">
-                        <input type="text" placeholder="Axtarış sözünü yazın..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-5 pr-12 py-3.5 text-sm focus:outline-none focus:border-indigo-500 transition-colors">
-                        <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-indigo-700 transition-colors shadow-sm">
-                            <i class="fas fa-search text-sm"></i>
-                        </button>
-                    </div>
+                    <form method="get" asp-controller="Blog" asp-action="Search">
+                        <div class="relative">
+                            <input type="text" name="term" placeholder="Axtarış sözünü yazın..." class="w-full bg-slate-50 border border-slate-200 rounded-2xl pl-5 pr-12 py-3.5 text-sm focus:outline-none focus:border-indigo-500 transition-colors">
+                            <button class="absolute right-2 top-1/2 -translate-y-1/2 bg-indigo-600 text-white w-10 h-10 rounded-xl flex items-center justify-center hover:bg-indigo-700 transition-colors shadow-sm">
+                                <i class="fas fa-search text-sm"></i>
+                            </button>
+                        </div>
+                    </form>
                 </div>
 
-                <!-- Category Widget (Strictly matching design with Counts) -->
                 <div class="bg-white border border-slate-150 rounded-3xl p-6 shadow-sm">
                     <h4 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
                         <i class="fas fa-tags text-indigo-600 text-sm"></i> Kateqoriyalar
                     </h4>
                     <div class="space-y-2">
-                        <!-- Clickable labels that toggle the document filters -->
-                        <a asp-action="Index" asp-controller="Blog" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all bg-slate-50 text-slate-600 hover:bg-slate-100 cursor-pointer">
+                        <a asp-action="Index"
+                           asp-controller="Blog"
+                           class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all bg-slate-50 text-slate-600 hover:bg-slate-100">
                             <span>Hamısı</span>
-                            <span class="count-badge bg-slate-200 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold">@Model.Count</span>
+                            <span class="count-badge bg-slate-200 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold">
+                                @Model.TotalCount
+                            </span>
                         </a>
 
-                        @foreach(var item in ViewBag.Categories)
+                        @foreach (var item in ViewBag.Categories)
                         {
-                            <a asp-action="Index" asp-controller="Blog" asp-route-categoryId="@item.Id" class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all bg-slate-50 text-slate-600 hover:bg-slate-100 cursor-pointer">
-                                <span>@item.BlogCategoryName</span>
-                                <span class="count-badge bg-slate-200 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold">@item.Count</span>
-                            </a>
+                            <a asp-action="Index"
+                               asp-controller="Blog"
+                               asp-route-categoryId="@item.Id"
+                               class="w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-xs md:text-sm font-semibold transition-all
+               @(ViewBag.SelectedCategoryId?.ToString() == item.Id.ToString()
+                                                                     ? "bg-indigo-600 text-white"
+                                                                     : "bg-slate-50 text-slate-600 hover:bg-slate-100")">
 
-                        }
-
+                            <span>@item.BlogCategoryName</span>
+                            <span class="count-badge bg-slate-200 text-slate-700 text-[10px] px-2 py-0.5 rounded-full font-bold">
+                                @item.Count
+                            </span>
+                        </a>
+                                                }
                     </div>
                 </div>
 
-                <!-- Recent Posts Widget (Ref: Annotation 2026-05-28 211841.jpg) -->
                 <div class="bg-white border border-slate-150 rounded-3xl p-6 shadow-sm">
                     <h4 class="text-base font-bold text-slate-900 mb-5 flex items-center gap-2">
                         <i class="far fa-clock text-indigo-600 text-sm"></i> Son Paylaşımlar
                     </h4>
                     <div class="space-y-4">
-                        <!-- Each item triggers corresponding modal popup via HTML labels -->
-                        @foreach(var item in ViewBag.RecentBlogs)
+                        @if (ViewBag.RecentBlogs != null)
                         {
-                            <a href="/Blog/PostDetail/@item.Id"  class="flex items-start gap-3.5 group cursor-pointer hover:bg-slate-50 p-1.5 rounded-xl transition-colors">
-                                <div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-slate-100">
-                                    <img src="@item.ImageUrl" alt="@item.Title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
-                                </div>
-                                <div class="flex-grow">
-                                    <h5 class="text-xs md:text-sm font-bold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2">@item.Title</h5>
-                                    <p class="text-[10px] text-slate-400 font-semibold mt-1">@item.CreatedDate.ToString("dd MMM, yyyy")</p>
-                                </div>
-                            </a>
-
+                            @foreach (var item in ViewBag.RecentBlogs)
+                            {
+                                <a href="/Blog/PostDetail/@item.Id" class="flex items-start gap-3.5 group cursor-pointer hover:bg-slate-50 p-1.5 rounded-xl transition-colors">
+                                    <div class="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-slate-100">
+                                        <img src="@item.ImageUrl" alt="@item.Title" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300">
+                                    </div>
+                                    <div class="flex-grow">
+                                        <h5 class="text-xs md:text-sm font-bold text-slate-900 leading-tight group-hover:text-indigo-600 transition-colors line-clamp-2">@item.Title</h5>
+                                        <p class="text-[10px] text-slate-400 font-semibold mt-1">@item.CreatedDate.ToString("dd MMM, yyyy")</p>
+                                    </div>
+                                </a>
+                            }
                         }
-
                     </div>
                 </div>
 
-
-
             </aside>
+        </div>
+        <div class="flex justify-center mt-10 gap-2 flex-wrap">
+
+            @if (Model.CurrentPage > 1)
+            {
+                <a asp-action="Index"
+                   asp-route-page="@(Model.CurrentPage - 1)"
+                   asp-route-categoryId="@ViewBag.SelectedCategoryId"
+                   class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+                    Əvvəlki
+                </a>
+            }
+
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <a asp-action="Index"
+                   asp-route-page="@i"
+                   asp-route-categoryId="@ViewBag.SelectedCategoryId"
+                   class="px-4 py-2 rounded-lg @(i == Model.CurrentPage ? "bg-blue-600 text-white" : "bg-gray-200 hover:bg-gray-300")">
+                    @i
+                </a>
+            }
+            
+
+            @if (Model.CurrentPage < Model.TotalPages)
+            {
+                <a asp-action="Index"
+                   asp-route-page="@(Model.CurrentPage + 1)"
+                   asp-route-categoryId="@ViewBag.SelectedCategoryId"
+                   class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300">
+                    Növbəti
+                </a>
+            }
 
         </div>
-
     </div>
 </main>

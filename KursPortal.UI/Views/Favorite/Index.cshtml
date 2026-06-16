@@ -1,0 +1,142 @@
+﻿@model ResultFavoriteVM
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<br />
+<br />
+<br />
+<br />
+<main class="flex-grow py-12">
+    <div class="container mx-auto px-6">
+
+        @if (TempData["Error"] != null)
+        {
+            <div id="alertBox" class="max-w-4xl mx-auto mb-6 px-4 py-3 rounded-xl bg-red-100 text-red-700 shadow-md text-center">
+                @TempData["Error"]
+            </div>
+        }
+
+
+
+        <div id="courseContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            @if (Model?.FavoriteItems != null && Model.FavoriteItems.Any())
+            {
+                @foreach (var item in Model.FavoriteItems)
+                {
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 group flex flex-col">
+                        <div class="relative overflow-hidden">
+                            <form asp-controller="Favorite"
+                                  asp-action="Remove"
+                                  method="post"
+                                  asp-route-courseId="@item.CourseId"
+                                  class="absolute top-3 right-3 z-10">
+
+                                <button type="submit"
+                                        class="w-9 h-9 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm shadow-md text-gray-500 hover:bg-red-500 hover:text-white transition-all duration-300"
+                                        title="Favorilərdən sil">
+                                    <i class="fas fa-times"></i>
+                                </button>
+
+                            </form>
+                            <img src="@item.ImageUrl" class="w-full h-48 object-cover group-hover:scale-110 transition-transform duration-500" alt="@item.Title">
+                        </div>
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="font-bold text-xl mt-2 mb-4 text-gray-800">@item.Title</h3>
+
+                            <div class="mt-auto">
+                                <div class="flex items-center justify-between mb-4 pt-4 border-t border-gray-50">
+                                    <div class="flex flex-col">
+                                        <span class="text-xs text-gray-400 line-through">@item.Price AZN</span>
+                                        <span class="text-xl font-bold text-blue-600">@item.DiscountPrice AZN</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <form asp-controller="Cart" asp-action="AddToCart" method="post" asp-route-courseId="@item.CourseId">
+                                            <button type="submit" class="bg-gray-900 text-white p-2.5 rounded-lg hover:bg-blue-600 transition flex items-center justify-center" title="Səbətə at">
+                                                <i class="fas fa-shopping-cart"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                                <a asp-action="Index" asp-controller="CourseDetail" asp-route-id="@item.CourseId" class="w-full inline-flex items-center justify-center gap-2 bg-blue-50 text-blue-700 px-4 py-2.5 rounded-xl font-bold text-sm hover:bg-blue-600 hover:text-white transition-colors duration-300">
+                                    Ətraflı bax <i class="fas fa-arrow-right text-xs"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-span-full flex justify-center">
+                    <div class="bg-white rounded-3xl p-10 md:p-16 shadow-lg border border-gray-100 text-center max-w-3xl w-full">
+
+                        <!-- Illustration -->
+                        <div class="relative w-48 h-48 mx-auto mb-8 flex items-center justify-center">
+                            <div class="absolute inset-0 bg-rose-50 rounded-full animate-pulse"></div>
+
+                            <svg class="w-32 h-32 text-rose-500 relative z-10"
+                                 fill="none"
+                                 stroke="currentColor"
+                                 viewBox="0 0 24 24"
+                                 xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="1.5"
+                                      d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
+                                </path>
+                                <path stroke-linecap="round"
+                                      stroke-linejoin="round"
+                                      stroke-width="2"
+                                      d="M12 12l.01-.01"
+                                      fill="currentColor">
+                                </path>
+                            </svg>
+
+                            <span class="absolute top-6 right-8 text-indigo-400 text-lg opacity-40 animate-bounce">
+                                <i class="fas fa-heart"></i>
+                            </span>
+
+                            <span class="absolute bottom-10 left-6 text-rose-300 text-xl">
+                                <i class="far fa-star"></i>
+                            </span>
+                        </div>
+
+                        <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-5">
+                            Favoriləriniz boşdur
+                        </h1>
+
+                        <p class="text-gray-500 text-lg leading-relaxed max-w-xl mx-auto mb-10">
+                            Bəyəndiyiniz, daha sonra izləmək və ya almaq istədiyiniz kursları
+                            favorilərə əlavə edərək öz öyrənmə planınızı yarada bilərsiniz.
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row justify-center gap-4 mb-10">
+                            <a href="/courses"
+                               class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl transition-all duration-300 flex items-center justify-center gap-3">
+                                <i class="fas fa-compass"></i>
+                                Kursları Kəşf Et
+                            </a>
+
+                            <a href="/"
+                               class="px-8 py-4 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold rounded-2xl transition-all duration-300">
+                                Ana Səhifə
+                            </a>
+                        </div>
+
+                        <div class="border-t border-gray-100 pt-6">
+                            <p class="text-gray-400 text-sm font-medium">
+                                <i class="fas fa-heart text-rose-500 mr-2"></i>
+                                Kurs kartlarındakı ürək işarəsinə klikləyərək onları
+                                favorilər siyahınıza əlavə edə bilərsiniz.
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            }
+    </div>
+</main>
+

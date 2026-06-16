@@ -18,12 +18,12 @@ namespace KursPortal.API.Validators
 
             RuleFor(x => x.Title)
                 .NotEmpty().WithMessage("Başlıq boş ola bilməz")
-                .MaximumLength(100);
+                .MaximumLength(100).WithMessage("Başlıq maksimum 100 simvol olmalıdır");
 
             RuleFor(x => x.Subject)
                 .NotEmpty().WithMessage("Mesaj boş ola bilməz")
-                .MinimumLength(10)
-                .MaximumLength(1000);
+                .MinimumLength(10).WithMessage("Mesaj minimum 10 simvol olmalıdır")
+                .MaximumLength(1000).WithMessage("Mesaj maksimum 1000 simvol olmalıdır");
 
         }
     }

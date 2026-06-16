@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KursPortal.Business.Abstract;
 using KursPortal.DTOs.DTOs.CourseDtos;
+using KursPortal.DTOs.DTOs.StudentDtos;
 using KursPortal.Entity.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -17,13 +18,15 @@ namespace KursPortal.API.Controllers
     {
         readonly ICourseService _courseService;
         readonly IMapper _mapper;
+        readonly IStudentService _studentService;
         readonly UserManager<AppUser> _userManager;
 
-        public CoursesController(ICourseService courseService, IMapper mapper, UserManager<AppUser> userManager)
+        public CoursesController(ICourseService courseService, IMapper mapper, UserManager<AppUser> userManager, IStudentService studentService)
         {
             _courseService = courseService;
             _mapper = mapper;
             _userManager = userManager;
+            _studentService = studentService;
         }
 
         [HttpGet("getall")]
@@ -124,9 +127,30 @@ namespace KursPortal.API.Controllers
                 teacher.ProfessionalTitle,
                 teacher.ExperienceYears,
                 teacher.Profession
-
             });
         }
 
+        [HttpGet("{teacherId}/students")]
+        public async Task<IActionResult> GetStudents(Guid teacherId)
+        {
+            var students = await _studentService.GetStudentsByTeacherIdAsync(teacherId);
+            return Ok(students);
+        }
+
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPagedCourses(int page = 1, int pageSize = 20)
+        {
+            var courses = await _courseService.GetPagedCoursesAsync(page, pageSize);
+            var totalCount = await _courseService.GetCourseCountAsync();
+            var result = _mapper.Map<List<ResultCourseDto>>(courses);
+            return Ok(new
+            {
+                Data = result,
+                CurrentPage = page,
+                PageSize = pageSize,
+                totalCount = totalCount,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+            });
+        }
     }
 }

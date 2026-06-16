@@ -19,9 +19,24 @@ namespace KursPortal.DataAccess.Concrete
             _context = context;
         }
 
+        public async Task<int> GetCourseCountAsync()
+        {
+            return await _context.Courses.CountAsync();
+        }
+
         public async Task<IEnumerable<Course>> GetCoursesWithCategoriesAndTeachersAsync()
         {
             return await _context.Courses.Include(c => c.Category).Include(c => c.Teacher).ToListAsync();
+        }
+
+        public async Task<IEnumerable<Course>> GetPagedCoursesAsync(int page, int pageSize)
+        {
+            return await _context.Courses
+                .Include(x => x.Category)
+                .Include(x => x.Teacher)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
         }
 
         public async Task<AppUser?> GetTeacherByCourseIdAsync(Guid courseId)

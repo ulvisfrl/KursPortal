@@ -4,6 +4,7 @@ using KursPortal.DTOs.DTOs.BlogCommentDtos;
 using KursPortal.Entity.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Threading.Tasks;
 
 namespace KursPortal.API.Controllers
@@ -24,6 +25,9 @@ namespace KursPortal.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateBlogComment(CreateBlogCommentDto dto)
         {
+            if(!ModelState.IsValid)
+                return BadRequest(ModelState);
+
             var blogComment = _mapper.Map<BlogComment>(dto);
             await _blogCommentService.AddAsync(blogComment);
             return Ok();

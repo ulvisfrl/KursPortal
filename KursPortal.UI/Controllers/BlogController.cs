@@ -3,9 +3,16 @@ using KursPortal.UI.ViewModels.BlogCategoryViewModel;
 using KursPortal.UI.ViewModels.BlogCommentViewModel;
 using KursPortal.UI.ViewModels.BlogViewModel;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace KursPortal.UI.Controllers
 {
+    [Route("blogs")]
     public class BlogController : Controller
     {
         private readonly HttpClient _client;
@@ -15,27 +22,60 @@ namespace KursPortal.UI.Controllers
             _client = httpClientFactory.CreateClient("ApiClient");
         }
 
-        // BLOG LIST
-        public async Task<IActionResult> Index(Guid? categoryId)
+        [HttpGet("")]
+        public async Task<IActionResult> Index(Guid? categoryId, int page = 1)
         {
-            var categories = await _client.GetFromJsonAsync<List<ResultBlogCategoryVM>>("blogcategories/getAll");
+            var categories = await _client.GetFromJsonAsync<List<ResultBlogCategoryVM>>
+                ("blogcategories/getAll") ?? new List<ResultBlogCategoryVM>();
+
             ViewBag.Categories = categories;
-            var response = await _client.GetFromJsonAsync<List<ResultBlogVM>>("blogs/getAll");
-            if (categoryId.HasValue)
+
+            var response = await _client.GetFromJsonAsync<PagedBlogVM>(
+                $"blogs/paged?categoryId={categoryId}&page={page}&pageSize=5");
+
+            if (response == null)
             {
-                response = response.Where(x => x.BlogCategory.Id == categoryId).ToList();
+                response = new PagedBlogVM
+                {
+                    Data = new List<ResultBlogVM>()
+                };
             }
 
-            ViewBag.RecentBlogs = response.OrderByDescending(x => x.CreatedDate).Take(3).ToList();  
+            ViewBag.RecentBlogs = response.Data
+                .OrderByDescending(x => x.CreatedDate)
+                .Take(3)
+                .ToList();
+
+            ViewBag.SelectedCategoryId = categoryId;
+
             return View(response);
         }
 
-        // BLOG DETAIL PAGE
-        [HttpGet]
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(string term)
+        {
+            var categories = await _client.GetFromJsonAsync<List<ResultBlogCategoryVM>>("blogcategories/getAll") ?? new List<ResultBlogCategoryVM>();
+            ViewBag.Categories = categories;
+
+            string endpoint = string.IsNullOrEmpty(term) ? "blogs/getAll" : $"blogs/search?term={term}";
+            var response = await _client.GetFromJsonAsync<List<ResultBlogVM>>(endpoint) ?? new List<ResultBlogVM>();
+
+            var model = new PagedBlogVM
+            {
+                Data = response,
+                CurrentPage = 1,
+                PageSize = 1
+            };
+
+            ViewBag.RecentBlogs = response.OrderByDescending(x => x.CreatedDate).Take(3).ToList();
+
+            return View("Index", model);
+        }
+
+        [HttpGet("post/{id}")]
         public async Task<IActionResult> PostDetail(Guid id)
         {
-            var response =
-                await _client.GetFromJsonAsync<ResultBlogVM>($"blogs/{id}");
+            var response = await _client.GetFromJsonAsync<ResultBlogVM>($"blogs/{id}");
 
             if (response == null)
                 return NotFound();
@@ -48,13 +88,10 @@ namespace KursPortal.UI.Controllers
             });
         }
 
-        // ADD COMMENT
-        [HttpPost]
+        [HttpPost("post/{id}")]
         public async Task<IActionResult> PostDetail(CreateBlogCommentVM createBlogCommentVM)
         {
-            var blog =
-                await _client.GetFromJsonAsync<ResultBlogVM>(
-                    $"blogs/{createBlogCommentVM.BlogId}");
+            var blog = await _client.GetFromJsonAsync<ResultBlogVM>($"blogs/{createBlogCommentVM.BlogId}");
 
             if (blog == null)
                 return NotFound();
@@ -66,21 +103,15 @@ namespace KursPortal.UI.Controllers
                 return View(createBlogCommentVM);
             }
 
-            var response =
-                await _client.PostAsJsonAsync(
-                    "BlogComments",
-                    createBlogCommentVM);
+            var response = await _client.PostAsJsonAsync("BlogComments", createBlogCommentVM);
 
             if (!response.IsSuccessStatusCode)
             {
                 ModelState.AddModelError("", "Şərh əlavə edilə bilmədi");
-
                 return View(createBlogCommentVM);
             }
 
-            return RedirectToAction(
-                nameof(PostDetail),
-                new { id = createBlogCommentVM.BlogId });
+            return RedirectToAction(nameof(PostDetail), new { id = createBlogCommentVM.BlogId });
         }
     }
 }

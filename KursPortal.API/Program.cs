@@ -21,7 +21,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.DocInclusionPredicate((docName, apiDesc) =>
+    {
+        // ?g?r Controller-in namespace-i "KursPortal.API" il? ba?lay?rsa, onu Swagger-? daxil et
+        return apiDesc.ActionDescriptor.DisplayName.Contains("KursPortal.API");
+    });
+});
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
@@ -48,6 +55,10 @@ builder.Services.AddScoped<IBlogCommentRepository, BlogCommentRepository>();
 builder.Services.AddScoped<IBlogCommentService, BlogCommentService>();
 builder.Services.AddScoped<IFaqRepository, FaqRepository>();
 builder.Services.AddScoped<IFaqService, FaqService>();
+builder.Services.AddScoped<IStudentService, StudentService>();
+builder.Services.AddScoped<IStudenRepository, StudentRepository>();
+builder.Services.AddScoped<IFavoriteRepository, FavoriteRepository>();
+builder.Services.AddScoped<IFavoriteService, FavoriteService>();
 
 builder.Services.AddAutoMapper(typeof(GeneralMapping).Assembly);
 

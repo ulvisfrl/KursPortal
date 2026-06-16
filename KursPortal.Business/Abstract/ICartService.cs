@@ -17,3 +17,4 @@ namespace KursPortal.Business.Abstract
 
     }
 }
+

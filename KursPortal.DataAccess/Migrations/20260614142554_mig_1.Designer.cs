@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KursPortal.DataAccess.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260530191711_mig_2")]
-    partial class mig_2
+    [Migration("20260614142554_mig_1")]
+    partial class mig_1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -82,6 +82,9 @@ namespace KursPortal.DataAccess.Migrations
                     b.Property<int?>("ExperienceYears")
                         .HasColumnType("int");
 
+                    b.Property<Guid?>("FavoriteId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("FirsName")
                         .HasColumnType("nvarchar(max)");
 
@@ -133,6 +136,8 @@ namespace KursPortal.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CartId");
+
+                    b.HasIndex("FavoriteId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -436,6 +441,55 @@ namespace KursPortal.DataAccess.Migrations
                     b.ToTable("Faqs");
                 });
 
+            modelBuilder.Entity("KursPortal.Entity.Entities.Favorite", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Favorites");
+                });
+
+            modelBuilder.Entity("KursPortal.Entity.Entities.FavoriteItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CourseId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("FavoriteId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CourseId");
+
+                    b.HasIndex("FavoriteId");
+
+                    b.ToTable("FavoriteItems");
+                });
+
             modelBuilder.Entity("KursPortal.Entity.Entities.Order", b =>
                 {
                     b.Property<Guid>("Id")
@@ -450,6 +504,12 @@ namespace KursPortal.DataAccess.Migrations
 
                     b.Property<bool>("IsPaid")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StripeSessionId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("TotalPrice")
                         .HasColumnType("decimal(18,2)");
@@ -650,7 +710,13 @@ namespace KursPortal.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("CartId");
 
+                    b.HasOne("KursPortal.Entity.Entities.Favorite", "Favorite")
+                        .WithMany()
+                        .HasForeignKey("FavoriteId");
+
                     b.Navigation("Cart");
+
+                    b.Navigation("Favorite");
                 });
 
             modelBuilder.Entity("KursPortal.Entity.Entities.Blog", b =>
@@ -730,6 +796,36 @@ namespace KursPortal.DataAccess.Migrations
                     b.Navigation("Category");
 
                     b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("KursPortal.Entity.Entities.Favorite", b =>
+                {
+                    b.HasOne("KursPortal.Entity.Entities.AppUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("KursPortal.Entity.Entities.FavoriteItem", b =>
+                {
+                    b.HasOne("KursPortal.Entity.Entities.Course", "Course")
+                        .WithMany("FavoriteItems")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("KursPortal.Entity.Entities.Favorite", "Favorite")
+                        .WithMany("FavoriteItems")
+                        .HasForeignKey("FavoriteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Favorite");
                 });
 
             modelBuilder.Entity("KursPortal.Entity.Entities.Order", b =>
@@ -867,9 +963,16 @@ namespace KursPortal.DataAccess.Migrations
                 {
                     b.Navigation("CartItems");
 
+                    b.Navigation("FavoriteItems");
+
                     b.Navigation("OrderItems");
 
                     b.Navigation("UserCourses");
+                });
+
+            modelBuilder.Entity("KursPortal.Entity.Entities.Favorite", b =>
+                {
+                    b.Navigation("FavoriteItems");
                 });
 
             modelBuilder.Entity("KursPortal.Entity.Entities.Order", b =>

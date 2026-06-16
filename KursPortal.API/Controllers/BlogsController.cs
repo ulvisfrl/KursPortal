@@ -67,5 +67,40 @@ namespace KursPortal.API.Controllers
             await _blogService.UpdateAsync(blog);
             return Ok("Bloq guncellendi.");
         }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchBlogs(string term)
+        {
+            var blogs = await _blogService.GetBlogWithDetailsAsync();
+            if (!string.IsNullOrEmpty(term))
+            {
+                term = term.ToLower();
+                blogs = blogs.Where(x => x.Title.ToLower().Contains(term) || x.BlogCategory.BlogCategoryName.Contains(term)).ToList();
+            }
+
+            var result = _mapper.Map<List<ResultBlogDto>>(blogs);
+            return Ok(result);
+        }
+
+        [HttpGet("paged")]
+        public async Task<IActionResult> GetPagedBlogs(Guid? categoryId, int page = 1, int pageSize = 5)
+        {
+            var blogs = await _blogService
+                .GetPagedBlogsAsync(categoryId, page, pageSize);
+
+            var totalCount = await _blogService
+                .GetBlogCountAsync(categoryId);
+
+            var result = _mapper.Map<List<ResultBlogDto>>(blogs);
+
+            return Ok(new
+            {
+                Data = result,
+                TotalCount = totalCount,
+                CurrentPage = page,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+            });
+        }
     }
 }

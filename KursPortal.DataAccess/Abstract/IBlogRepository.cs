@@ -11,5 +11,7 @@ namespace KursPortal.DataAccess.Abstract
     {
         Task<List<Blog>> GetBlogWithDetailsAsync();
         Task<Blog> GetBlogWithDetailsAsync(Guid id);
+        Task<IEnumerable<Blog>> GetPagedBlogsAsync(Guid? categoryId, int page, int pageSize);
+        Task<int> GetBlogCountAsync(Guid? categoryId);
     }
 }

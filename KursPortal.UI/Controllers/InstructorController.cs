@@ -15,14 +15,14 @@ namespace KursPortal.UI.Controllers
         {
             _userManager = userManager;
         }
-
+        [HttpGet("")]
         public async Task<IActionResult> Index()
         {
             var teachers = await _userManager.GetUsersInRoleAsync("Teacher");
             return View(teachers);
         }
 
-        [HttpPost]
+        [HttpGet("search")]
         public async Task<IActionResult> Search(string term)
         {
             var teachers = await _userManager.GetUsersInRoleAsync("Teacher");

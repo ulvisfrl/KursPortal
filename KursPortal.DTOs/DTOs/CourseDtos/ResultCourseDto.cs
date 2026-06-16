@@ -29,5 +29,6 @@ namespace KursPortal.DTOs.DTOs.CourseDtos
         public string FirsName { get; set; }
         public string LastName { get; set; }
         public Guid TeacherId { get; set; }
+
     }
 }

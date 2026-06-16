@@ -24,6 +24,8 @@ namespace KursPortal.DataAccess.Context
         public DbSet<BlogCategory> BlogCategories { get; set; }
         public DbSet<BlogComment> BlogComments { get; set; }
         public DbSet<Faq> Faqs { get; set; }
+        public DbSet<Favorite> Favorites { get; set; }
+        public DbSet<FavoriteItem> FavoriteItems { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -106,6 +108,23 @@ namespace KursPortal.DataAccess.Context
                 .WithMany(t => t.Blogs)
                 .HasForeignKey(b => b.TeacherId);
 
+            builder.Entity<Favorite>()
+                .HasOne(f => f.User)
+                .WithMany()
+                .HasForeignKey(f => f.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<FavoriteItem>()
+                .HasOne(fi => fi.Favorite)
+                .WithMany(f => f.FavoriteItems)
+                .HasForeignKey(fi => fi.FavoriteId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.Entity<FavoriteItem>()
+                .HasOne(fi => fi.Course)
+                .WithMany(c => c.FavoriteItems)
+                .HasForeignKey(fi => fi.CourseId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

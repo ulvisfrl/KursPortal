@@ -20,6 +20,7 @@ namespace KursPortal.Entity.Entities
         public ICollection<Order> Orders { get; set; }
         public ICollection<UserCourse> UserCourses { get; set; }
         public Cart Cart { get; set; }
+        public Favorite Favorite { get; set; }
         public ICollection<Blog> Blogs { get; set; }
     }
 }

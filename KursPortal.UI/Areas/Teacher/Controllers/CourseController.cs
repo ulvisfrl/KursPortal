@@ -49,14 +49,26 @@ namespace KursPortal.UI.Areas.Teacher.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CreateCourseVM createCourseVM, IFormFile imageFile)
         {
-            if(imageFile != null)
+            if (imageFile != null)
             {
-                string uploadFile = await FileHelper.UploadFileAsync(imageFile,"courses",_env.WebRootPath);
-                createCourseVM.ImageUrl = uploadFile;
+                createCourseVM.ImageUrl =
+                    await FileHelper.UploadFileAsync(imageFile, "courses", _env.WebRootPath);
             }
+
             var teacherId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            createCourseVM.TeacherId = Guid.Parse(teacherId);
-            await _httpClient.PostAsJsonAsync("courses", createCourseVM);
+
+            if (!Guid.TryParse(teacherId, out var teacherGuid))
+                return BadRequest("Invalid TeacherId");
+
+            createCourseVM.TeacherId = teacherGuid;
+
+            var response = await _httpClient.PostAsJsonAsync("courses", createCourseVM);
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            if (!response.IsSuccessStatusCode)
+                return BadRequest(result);
+
             return RedirectToAction("Index");
         }
 

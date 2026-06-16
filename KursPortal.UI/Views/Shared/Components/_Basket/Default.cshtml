@@ -1,0 +1,11 @@
+﻿@model ResultCartVM
+
+<a href="/cart" class="relative p-2 text-slate-600 hover:text-indigo-600 transition-colors duration-200 group" title="Səbətim">
+    <i class="fa-solid fa-basket-shopping text-xl group-hover:scale-110 transition-transform"></i>
+    @if (Model?.CartItems?.Count > 0)
+    {
+        <span class="absolute top-0 right-0 bg-indigo-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center border border-white">
+            @Model.CartItems.Count
+        </span>
+    }
+</a>

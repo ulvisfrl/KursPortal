@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace KursPortal.UI.Controllers
 {
     [Authorize]
+    [Route("profile")]
     public class ProfileController : Controller
     {
         readonly UserManager<AppUser> _userManager;
@@ -15,6 +16,7 @@ namespace KursPortal.UI.Controllers
         {
             _userManager = userManager;
         }
+        [HttpGet("")]
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
@@ -48,6 +50,7 @@ namespace KursPortal.UI.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet("change-password")]
         public IActionResult ChangePassword()
         {
             return View();

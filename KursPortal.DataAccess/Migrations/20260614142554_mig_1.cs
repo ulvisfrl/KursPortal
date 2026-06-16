@@ -73,6 +73,21 @@ namespace KursPortal.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Faqs",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Question = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Faqs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Subscribers",
                 columns: table => new
                 {
@@ -167,6 +182,7 @@ namespace KursPortal.DataAccess.Migrations
                     ExperienceYears = table.Column<int>(type: "int", nullable: true),
                     Profession = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CartId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    FavoriteId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -301,6 +317,26 @@ namespace KursPortal.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Favorites",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Favorites", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Favorites_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Orders",
                 columns: table => new
                 {
@@ -308,6 +344,8 @@ namespace KursPortal.DataAccess.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     IsPaid = table.Column<bool>(type: "bit", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    StripeSessionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false)
                 },
@@ -400,6 +438,33 @@ namespace KursPortal.DataAccess.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FavoriteItems",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FavoriteId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FavoriteItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FavoriteItems_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FavoriteItems_Favorites_FavoriteId",
+                        column: x => x.FavoriteId,
+                        principalTable: "Favorites",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OrderItems",
                 columns: table => new
                 {
@@ -465,6 +530,11 @@ namespace KursPortal.DataAccess.Migrations
                 column: "CartId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_FavoriteId",
+                table: "AspNetUsers",
+                column: "FavoriteId");
+
+            migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
@@ -510,6 +580,21 @@ namespace KursPortal.DataAccess.Migrations
                 name: "IX_Courses_TeacherId",
                 table: "Courses",
                 column: "TeacherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FavoriteItems_CourseId",
+                table: "FavoriteItems",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FavoriteItems_FavoriteId",
+                table: "FavoriteItems",
+                column: "FavoriteId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Favorites_UserId",
+                table: "Favorites",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_OrderItems_CourseId",
@@ -566,6 +651,13 @@ namespace KursPortal.DataAccess.Migrations
                 column: "CartId",
                 principalTable: "Carts",
                 principalColumn: "Id");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUsers_Favorites_FavoriteId",
+                table: "AspNetUsers",
+                column: "FavoriteId",
+                principalTable: "Favorites",
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
@@ -574,6 +666,10 @@ namespace KursPortal.DataAccess.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Carts_AspNetUsers_UserId",
                 table: "Carts");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Favorites_AspNetUsers_UserId",
+                table: "Favorites");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
@@ -598,6 +694,12 @@ namespace KursPortal.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Contacts");
+
+            migrationBuilder.DropTable(
+                name: "Faqs");
+
+            migrationBuilder.DropTable(
+                name: "FavoriteItems");
 
             migrationBuilder.DropTable(
                 name: "OrderItems");
@@ -631,6 +733,9 @@ namespace KursPortal.DataAccess.Migrations
 
             migrationBuilder.DropTable(
                 name: "Carts");
+
+            migrationBuilder.DropTable(
+                name: "Favorites");
         }
     }
 }

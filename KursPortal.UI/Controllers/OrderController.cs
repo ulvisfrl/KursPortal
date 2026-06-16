@@ -1,48 +1,51 @@
-﻿using Azure;
-using KursPortal.UI.ViewModels.CartViewModel;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace KursPortal.UI.Controllers
 {
     public class OrderController : Controller
     {
-        readonly HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
         public OrderController(IHttpClientFactory httpClientFactory)
         {
             _httpClient = httpClientFactory.CreateClient("ApiClient");
         }
 
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult Index()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
-                return RedirectToAction("Login", "Account");
-
-            var cart = await _httpClient
-            .GetFromJsonAsync<ResultCartVM>($"carts/{userId}");
-
-            ViewBag.TotalPrice = cart?.CartItems.Sum(x => x.Price);
-
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateOrder()
         {
-            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            if (userId == null)
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (string.IsNullOrEmpty(userIdString))
                 return RedirectToAction("Login", "Account");
 
-            var response = await _httpClient.PostAsync($"orders/checkout?userId={userId}", null);
+            var url = $"orders/checkout?userId={userIdString}";
+
+            var response = await _httpClient.PostAsync(url, null);
 
             if (!response.IsSuccessStatusCode)
             {
                 var error = await response.Content.ReadAsStringAsync();
                 return Content(error);
             }
+
+            var json = await response.Content.ReadFromJsonAsync<JsonElement>();
+
+            string checkoutUrl = json.GetProperty("checkoutUrl").GetString();
+            return Redirect(checkoutUrl);
+        }
+
+        public async Task<IActionResult> Success(Guid orderId)
+        {
+            await _httpClient.PostAsync($"orders/confirm-payment?orderId={orderId}", null);
 
             return RedirectToAction("Index", "Home");
         }

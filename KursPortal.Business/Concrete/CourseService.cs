@@ -17,9 +17,19 @@ namespace KursPortal.Business.Concrete
             _courseRepository = courseRepository;
         }
 
+        public async Task<int> GetCourseCountAsync()
+        {
+            return await _courseRepository.GetCourseCountAsync();
+        }
+
         public async Task<IEnumerable<Course>> GetCoursesWithCategoriesAndTeachersAsync()
         {
             return await _courseRepository.GetCoursesWithCategoriesAndTeachersAsync();
+        }
+
+        public async Task<IEnumerable<Course>> GetPagedCoursesAsync(int page, int pageSize)
+        {
+            return await _courseRepository.GetPagedCoursesAsync(page, pageSize);
         }
 
         public async Task<AppUser?> GetTeacherByCourseIdAsync(Guid courseId)
